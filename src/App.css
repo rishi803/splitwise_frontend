@@ -21,13 +21,11 @@ body {
   color: var(--text-color);
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
 }
 
 .main-container-splitwise{
+  max-width:1200px;
   margin:auto;
   /* background-color: red; */
 }

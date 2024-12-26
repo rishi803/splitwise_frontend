@@ -1,18 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { signupUser } from "../../features/authSlice";
-import { Link } from "react-router-dom"; // Corrected import
+import { signupUser, clearError } from "../../features/authSlice";
+import { Link, useNavigate } from "react-router-dom"; 
 import "./Signup.css";
 
 function Signup() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate(); 
+  const { loading, error, token } = useSelector((state) => state.auth);
+
   const [userInfo, setUserInfo] = useState({
-    name: "",
+    username: "",
     email: "",
     password: "",
   });
   const [validationError, setValidationError] = useState("");
-  const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.auth);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
+
+  // Clear errors on component unmount
+  useEffect(() => {
+    return () => {
+      dispatch(clearError());
+    };
+  }, [dispatch]);
+
+  // Navigate to login after successful registration
+  useEffect(() => {
+    if (isRegistered) {
+      const timer = setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+
+      return () => clearTimeout(timer); // Cleanup timer
+    }
+  }, [isRegistered]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,7 +45,7 @@ function Signup() {
     const passwordRegex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-    if (!userInfo.name || !userInfo.email || !userInfo.password) {
+    if (!userInfo.username || !userInfo.email || !userInfo.password) {
       setValidationError("All fields are required.");
       return false;
     }
@@ -40,8 +62,18 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      await dispatch(signupUser(userInfo));
+      const res= await dispatch(signupUser(userInfo));
+
+      console.log("registered data ",res);
+      if (res.meta.requestStatus === "fulfilled") {
+        setIsRegistered(true);
+        console.log("User successfully registered!");
+      }
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
   };
 
   return (
@@ -51,9 +83,9 @@ function Signup() {
         <div className="input-group">
           <input
             type="text"
-            name="name"
+            name="username"
             placeholder=" "
-            value={userInfo.name}
+            value={userInfo.username}
             onChange={handleChange}
             required
           />
@@ -70,9 +102,9 @@ function Signup() {
           />
           <label>Email</label>
         </div>
-        <div className="input-group">
+        <div className="input-group password-group">
           <input
-            type="password"
+            type={passwordVisible ? "text" : "password"}
             name="password"
             placeholder=" "
             value={userInfo.password}
@@ -80,15 +112,34 @@ function Signup() {
             required
           />
           <label>Password</label>
+          <span
+            className={`eye-icon ${passwordVisible ? "visible" : ""}`}
+            onClick={togglePasswordVisibility}
+          >
+            👁️
+          </span>
         </div>
-        <p>
-          Already have an account? <Link to="/login">Login</Link>
+        <p style={{ fontSize: "18px" }}>
+          Already have an account?{" "}
+          <Link to="/login">
+            <p
+              style={{
+                fontSize: "18px",
+                color: "#002aff",
+              }}
+            >
+              Login
+            </p>
+          </Link>
         </p>
         <button type="submit" disabled={loading}>
           {loading ? "Signing up..." : "Signup"}
         </button>
         {validationError && <p className="error-message">{validationError}</p>}
-        {error && <p className="error-message">{error}</p>}
+        {error && <span className="error-message">{error}</span>}
+        {isRegistered && (
+          <p className="success-message">User registered successfully! Redirecting...</p>
+        )}
       </form>
     </div>
   );

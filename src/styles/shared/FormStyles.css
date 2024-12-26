@@ -4,6 +4,7 @@
     align-items: center;
     width: 100%;
     height: 100%;
+    margin-top: 40px;
   }
   
   .login-signup-form {
@@ -73,6 +74,7 @@
     border-radius: 8px;
     font-size: 1rem;
     font-weight: bold;
+    margin-bottom:10px;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out;
   }
@@ -88,11 +90,19 @@
   
   .error-message {
     color: var(--error-color);
-    margin-bottom: 1rem;
+    margin:0 1rem;
     font-size: 0.9rem;
     font-weight: bold;
   }
   
+
+  .success-message {
+    color: green;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    font-weight: bold;
+  }
+
   .login-signup-form a {
     display: inline-block;
     margin-top: 1rem;
@@ -104,6 +114,23 @@
   
   .login-signup-form a:hover {
     color: var(--primary-color);
+  }
+
+  .password-group {
+    position: relative;
+  }
+  
+  .eye-icon {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .eye-icon.visible {
+    opacity: 0.4;
   }
   
   @media (max-width: 480px) {

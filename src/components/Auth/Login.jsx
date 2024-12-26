@@ -1,14 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../features/authSlice";
-import { Link } from "react-router-dom"; // Fixed Link import
+import { loginUser, clearError } from "../../features/authSlice";
+import { Link, useNavigate } from "react-router-dom"; 
 import "./Login.css";
 
 function Login() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [validationError, setValidationError] = useState("");
-  const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.auth);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [isLoginSuccess, setIsLoginSuccess] = useState(false); // To handle redirection delay
+
+  const { loading, error, isAuthenticated } = useSelector((state) => state.auth);
+
+  // Clear errors when the component unmounts
+  useEffect(() => {
+    return () => {
+      dispatch(clearError());
+    };
+  }, [dispatch]);
+
+  // Handle 2-second delay before redirecting
+  useEffect(() => {
+    if (isLoginSuccess) {
+      const timer = setTimeout(() => {
+        navigate("/dashboard");
+      }, 2000);
+
+      return () => clearTimeout(timer); // Cleanup timer on component unmount
+    }
+  }, [isLoginSuccess, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,9 +49,18 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (validateForm()) {
-      await dispatch(loginUser(credentials));
+      const res = await dispatch(loginUser(credentials));
+
+      if (res.meta.requestStatus === "fulfilled") {
+        setIsLoginSuccess(true); // Delay redirection
+      }
     }
+  };
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
   };
 
   return (
@@ -46,9 +78,9 @@ function Login() {
           />
           <label>Email</label>
         </div>
-        <div className="input-group">
+        <div className="input-group password-group">
           <input
-            type="password"
+            type={passwordVisible ? "text" : "password"}
             name="password"
             placeholder=" "
             value={credentials.password}
@@ -56,15 +88,27 @@ function Login() {
             required
           />
           <label>Password</label>
+          <span
+            className={`eye-icon ${passwordVisible ? "visible" : ""}`}
+            onClick={togglePasswordVisibility}
+          >
+            👁️
+          </span>
         </div>
         <p>
-          Don't have an account? <Link to="/signup">Signup</Link>
+          Don't have an account?{" "}
+          <Link to="/signup" style={{ color: "#002aff" }}>
+            Signup
+          </Link>
         </p>
         <button type="submit" disabled={loading}>
           {loading ? "Logging in..." : "Login"}
         </button>
         {validationError && <p className="error-message">{validationError}</p>}
         {error && <p className="error-message">{error}</p>}
+        {isLoginSuccess && (
+          <p className="success-message">Login successful! Redirecting...</p>
+        )}
       </form>
     </div>
   );
