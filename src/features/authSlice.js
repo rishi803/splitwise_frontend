@@ -89,6 +89,7 @@ export const loginUser = createAsyncThunk(
       console.log(credentials);
       const response = await api.post("/auth/login", credentials);
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data.user));
 
       return response.data;
     } catch (error) {
@@ -115,9 +116,7 @@ export const signupUser = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: localStorage.getItem("token")
-      ? localStorage.getItem("token")
-      : null,
+    user: JSON.parse(localStorage.getItem("user")) || null,
     token: localStorage.getItem("token"),
     isAuthenticated: localStorage.getItem("isAuthenticated") || false,
     loading: false,
@@ -129,6 +128,7 @@ const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       localStorage.removeItem("token");
+      localStorage.removeItem("user");
       localStorage.removeItem("isAuthenticated");
     },
 

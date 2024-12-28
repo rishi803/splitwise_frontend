@@ -9,7 +9,6 @@
     position: sticky;
     top: 0;
     z-index: 1000;
-    max-width:1100px;
   }
 
   /* *{
@@ -20,7 +19,7 @@
     font-size: 1.8rem;
     font-weight: bold;
     font-style: italic;
-    color: #2642b1;
+    color: var(--primary-color);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
   }
   

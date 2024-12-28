@@ -1,0 +1,154 @@
+.group-dialog-main-container{
+  width:100%;
+}
+
+.group-dialog-overlay{
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.5);
+  width:100%;
+  height:100vh;
+  top:0;
+  left:0;
+  backdrop-filter:blur(100px);
+  z-index:1000;
+}
+
+.group-dialog-container {
+    max-width: 400px;
+    width:100%;
+    margin: auto;
+    padding: 16px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    top:-200px;
+    z-index:2000;
+  }
+  
+  .group-dialog-title {
+    font-size: 1.5rem;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .group-dialog-close {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.5rem;
+    background-color: var(--primary-color);
+    border-radius:50%;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: white;
+    transition: background-color 0.3 s ease;
+  }
+  
+  /* .group-dialog-close:hover {
+    color: black;
+  } */
+  
+  .group-dialog-input {
+    width: 90%;
+    /* margin:auto; */
+    outline:none;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-bottom: 16px;
+  }
+  
+  .group-dialog-input::placeholder {
+    color: #aaa;
+  }
+
+  .group-dialog-container input:focus{
+    border: 1px solid var(--primary-color) !important;
+  }
+  
+  .group-dialog-suggestions {
+    position: relative;
+  }
+  
+  .group-dialog-suggestions-list {
+    position: absolute;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+  }
+  
+  .group-dialog-suggestion-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .group-dialog-suggestion-item:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .group-dialog-selected-users {
+    margin-bottom: 15px;
+  }
+  
+  .group-dialog-selected-user {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    background-color: #f5f5f5;
+    border-radius: 16px;
+    margin-right: 8px;
+    margin-bottom:10px;
+  }
+  
+  .group-dialog-remove-user {
+    background: none;
+    border: none;
+    color:rgba(232, 44, 44, 0.623);
+    cursor: pointer;
+    padding: 0 10px;
+    transition: transform 0.2s ease;
+  }
+  
+  .group-dialog-remove-user:hover {
+    transform: scale(1.1);
+  }
+  
+  .group-dialog-button {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .group-dialog-button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+  }
+  
+  .group-dialog-header {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  
+  .group-dialog-user-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 8px;
+  }
+  
+  .group-dialog-icon {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+  

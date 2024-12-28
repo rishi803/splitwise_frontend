@@ -31,7 +31,7 @@ function Login() {
 
       return () => clearTimeout(timer); // Cleanup timer on component unmount
     }
-  }, [isLoginSuccess, navigate]);
+  }, [isLoginSuccess]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
