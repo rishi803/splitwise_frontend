@@ -1,15 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { signupSchema } from "../utils/validation";
 import api from "../utils/api";
-import "../styles/shared/FormStyles.css";
+import "../styles/FormStyles.css";
 
 const Signup = () => {
   const navigate = useNavigate();
   const [serverError, setServerError] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const { isAuthenticated } = useSelector((state) => state.auth);
+
+  
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleSubmit = async (values, { setSubmitting }) => {
     try {

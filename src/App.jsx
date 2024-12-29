@@ -1,14 +1,13 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import store from './store'
+import store from './store';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import Navbar from './components/common/Navbar';
-
-
+import GroupDetails from './pages/GroupDetail';
 
 import './App.css';
 
@@ -31,6 +30,14 @@ function App() {
                 </ProtectedRoute>
               }
             />
+             <Route
+                path="/groups/:id"
+                element={
+                  <ProtectedRoute>
+                    <GroupDetails />
+                  </ProtectedRoute>
+                }
+              />
             <Route path="/" element={<Navigate to="/login" replace />} />
           </Routes>
         </Router>
