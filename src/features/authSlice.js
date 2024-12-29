@@ -10,55 +10,7 @@ const api = axios.create({
 //   withCredentials: true 
 });
 
-// Axios interceptors for automatic token refresh
-// api.interceptors.request.use(
-//   async (config) => {
-//     const token = localStorage.getItem("token");
-//     if (token) {
-//       config.headers.Authorization = `Bearer ${token}`;
-//     }
-//     return config;
-//   },
-//   (error) => Promise.reject(error)
-// );
 
-// api.interceptors.response.use(
-//   (response) => response,
-//   async (error) => {
-//     const originalRequest = error.config;
-
-
-//     //to avoid issue when user enters wrong credentials 
-
-//     if (originalRequest.url.includes("/auth/")) {
-//       return Promise.reject(error);
-//     }
-
-//     if (error.response?.status === 401 && !originalRequest._retry) {
-//         originalRequest._retry = true;
-      
-//         console.log('Token expired. Attempting to refresh token...');
-//         try {
-//           const response = await api.post("/auth/refresh");
-//           console.log('Refresh successful. New token:', response.data.token);
-      
-//           localStorage.setItem("token", response.data.token);
-//           originalRequest.headers.Authorization = `Bearer ${response.data.token}`;
-//           return api(originalRequest);
-//         } catch (err) {
-//           console.error('Refresh failed. Logging out user...');
-//           localStorage.removeItem("token");
-//           store.dispatch(logout());
-//           window.location.href = "/login";
-//           return Promise.reject(err);
-//         }
-//       }
-      
-
-//     console.log(error);
-//     return Promise.reject(error);
-//   }
-// );
 
 api.interceptors.request.use(
     async (config) => {
@@ -116,7 +68,7 @@ export const signupUser = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: JSON.parse(localStorage.getItem("user")) || null,
+    user:  null,
     token: localStorage.getItem("token"),
     isAuthenticated: localStorage.getItem("isAuthenticated") || false,
     loading: false,

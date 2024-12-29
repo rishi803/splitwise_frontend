@@ -1,141 +1,157 @@
-.form-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    margin-top: 40px;
-  }
-  
-  .login-signup-form {
-    background: var(--form-background);
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-    width: 400px;
-    text-align: center;
-    border: 1px solid var(--border-color);
-  }
-  
-  .login-signup-form h2 {
-    margin-bottom: 1.5rem;
-    color: var(--primary-color);
-    font-size: 1.8rem;
-    font-weight: bold;
-  }
-  
-  .input-group {
-    position: relative;
-    margin-bottom: 1.5rem;
-  }
-  
-  .input-group input {
-    width: 90%;
-    padding: 1rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 1rem;
-    background-color: var(--background-color);
-    transition: border-color 0.3s, box-shadow 0.3s;
-  }
-  
-  .input-group input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 6px rgba(69, 123, 157, 0.3);
-  }
-  
-  .input-group label {
-    position: absolute;
-    left: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #aaa;
-    font-size: 1rem;
-    transition: all 0.3s;
-    pointer-events: none;
-    padding: 0 5px;
-  }
-  
-  .input-group input:focus + label,
-  .input-group input:not(:placeholder-shown) + label {
-    top: -5px;
-    font-size: 0.85rem;
-    background-color: white;
-    color: var(--primary-color);
-  }
-  
-  .login-signup-form button {
-    width: 100%;
-    padding: 0.9rem;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: bold;
-    margin-bottom:10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
-  }
-  
-  .login-signup-form button:hover {
-    background-color: var(--primary-hover-color);
-  }
-  
-  .login-signup-form button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  .error-message {
-    color: var(--error-color);
-    margin:0 1rem;
-    font-size: 0.9rem;
-    font-weight: bold;
-  }
-  
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  padding: 20px;
+  margin-top: 50px;
+}
 
-  .success-message {
-    color: green;
-    margin-bottom: 1rem;
-    font-size: 0.9rem;
-    font-weight: bold;
+.auth-card {
+  background: var(--form-background);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-card h2 {
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.form-group {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.form-input {
+  width: 90%;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: var(--background-color);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 6px rgba(69, 123, 157, 0.3);
+}
+
+.form-group label{
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #aaa;
+  font-size: 1rem;
+  transition: all 0.3s;
+  pointer-events: none;
+  padding: 0 5px;
+}
+
+/* .password-group label {
+  position: absolute;
+  left: 16px;
+  top: 30%;
+} */
+
+.password-group {
+  position: relative;
+}
+
+.eye-icon {
+  position: absolute;
+  top: 55%;
+  right: 15px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #888; 
+  font-size: 1.2rem;
+}
+
+.eye-icon:hover {
+  color: #3498db; 
+}
+
+
+.form-group input:focus + label,
+.form-group input:not(:placeholder-shown) + label {
+  top: -5px;
+  font-size: 0.85rem;
+  background-color: white;
+  color: var(--primary-color);
+}
+
+.error-text {
+  text-align: left;
+  color: #e74c3c;
+  font-size: 0.875rem;
+  margin-top:-16px;
+  margin-bottom:25px;
+  margin-left: 6px;
+}
+
+.error-message {
+  background-color: #fdecea;
+  color: #e74c3c;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 1.3rem;
+  text-align: center;
+}
+
+.auth-button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.auth-button:hover {
+  background-color: #012ef4;
+  transform: scale(1.03);
+}
+
+.auth-button:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.auth-link {
+  text-align: center;
+  margin-top: 1rem;
+  color: #7f8c8d;
+}
+
+.link {
+  color: #3498db;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 1.5rem;
   }
 
-  .login-signup-form a {
-    display: inline-block;
-    margin-top: 1rem;
-    color: var(--secondary-color);
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: color 0.3s ease-in-out;
-  }
-  
-  .login-signup-form a:hover {
-    color: var(--primary-color);
+  .form-input {
+    padding: 0.5rem;
   }
 
-  .password-group {
-    position: relative;
+  .auth-button {
+    padding: 0.5rem;
   }
-  
-  .eye-icon {
-    position: absolute;
-    right: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    transition: color 0.3s ease;
-  }
-  
-  .eye-icon.visible {
-    opacity: 0.4;
-  }
-  
-  @media (max-width: 480px) {
-    .login-signup-form {
-      max-width: 90%;
-      padding: 1rem;
-    }
-  }
+}

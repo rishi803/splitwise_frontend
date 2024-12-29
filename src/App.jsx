@@ -1,53 +1,41 @@
-import "./App.css";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
-import Login from "./components/Auth/Login";
-import Signup from "./components/Auth/Signup";
-import Dashboard from "./components/Dashboard/Dashboard";
-import ProtectedRoute from "./utils/ProtectedRoute";
-import Navbar from "./components/Shared/Navbar";
-import { useSelector } from "react-redux";
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import store from './store'
+import ProtectedRoute from './components/ProtectedRoute';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+import Dashboard from './pages/Dashboard';
+import Navbar from './components/common/Navbar';
 
+
+
+import './App.css';
+
+const queryClient = new QueryClient();
 
 function App() {
-  const { token } = useSelector((state) => state.auth);
-
-  const isAuthenticated= useSelector(state => state.auth.isAuthenticated);
-
-  console.log(token);
-
   return (
-    <>
-    
-      <Router>
-      <Navbar />
-        <Routes>
-
-          <Route
-            path="/login"
-            element={isAuthenticated ? <Navigate to="/dashboard" /> : <Login />}
-          />
-
-          <Route
-            path="/signup"
-            element={<Signup />}
-          />
-
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-      </Router>
-    </>
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <Router>
+        <Navbar />
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/" element={<Navigate to="/login" replace />} />
+          </Routes>
+        </Router>
+      </QueryClientProvider>
+    </Provider>
   );
 }
 
