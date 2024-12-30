@@ -1,11 +1,14 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import {useState} from 'react';
+import { FaPlus } from 'react-icons/fa';
 import api from '../utils/api';
+import AddExpenseModal from '../components/Dashboard/AddExpenseModal';
 import './GroupDetails.css';
 
  const GroupDetails = () => {
   const { id } = useParams();
+  const [showExpenseModal, setShowExpenseModal] = useState(false);
 
   const { data: group, isLoading: groupLoading } = useQuery(
     ['group', id],
@@ -31,10 +34,15 @@ import './GroupDetails.css';
         <div className="total-expense">
           Total Expenses: ${group?.data.totalExpense}
         </div>
+
+        <button 
+          className="add-expense-button"
+          onClick={() => setShowExpenseModal(true)}
+        >
+         <FaPlus /> 
+        </button>
         
       </div>
-
-     
 
       <div className="expense-list">
         <h2>Recent Expenses</h2>
@@ -51,6 +59,14 @@ import './GroupDetails.css';
           </div>
         ))}
       </div>
+
+      {showExpenseModal && (
+        <AddExpenseModal 
+          groupId={id}
+          onClose={() => setShowExpenseModal(false)} 
+        />
+      )}
+     
 
     </div>
   );
