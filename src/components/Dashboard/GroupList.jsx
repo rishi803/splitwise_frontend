@@ -24,7 +24,7 @@ const GroupList = () => {
   return (
     <div className="group-list">
       <div className="group-grid">
-        {data?.data.groups.map(group => (
+        {data?.data?.groups?.map(group => (
           <GroupCard key={group.id} group={group} />
         ))}
       </div>

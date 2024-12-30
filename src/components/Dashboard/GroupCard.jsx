@@ -14,7 +14,7 @@ const GroupCard = ({ group }) => {
           <FaUsers /> {group.memberCount} members
         </div>
         <div>
-          <FaMoneyBillWave /> Total: ${group.totalExpense.toFixed(2)}
+          <FaMoneyBillWave /> Total: ${group.totalExpense}
         </div>
       </div>
       <div className="group-actions">
