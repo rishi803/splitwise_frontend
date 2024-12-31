@@ -60,7 +60,7 @@ const Signup = () => {
                   placeholder=""
                   className="form-input"
                 />
-                <label>Name</label>
+                <label className='special-label'>Name</label>
               </div>
               <ErrorMessage
                 name="name"
@@ -75,7 +75,7 @@ const Signup = () => {
                   placeholder=""
                   className="form-input"
                 />
-                <label>Email</label>
+                <label className='special-label'>Email</label>
               </div>
               <ErrorMessage
                 name="email"
@@ -90,7 +90,7 @@ const Signup = () => {
                   placeholder=""
                   className="form-input"
                 />
-                <label>Password</label>
+                <label className='special-label'>Password</label>
                 <span className="eye-icon" onClick={togglePasswordVisibility}>
                   {passwordVisible ? <FaEyeSlash /> : <FaEye />}
                 </span>
@@ -109,7 +109,7 @@ const Signup = () => {
                   placeholder=""
                   className="form-input"
                 />
-                <label>Confirm Password</label>
+                <label className='special-label'>Confirm Password</label>
               </div>
 
               <ErrorMessage

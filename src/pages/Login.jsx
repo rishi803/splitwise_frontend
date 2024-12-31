@@ -40,6 +40,10 @@ const Login = () => {
     }
   };
 
+  const handleInput= ()=>{
+      setServerError('');
+  }
+
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
@@ -53,6 +57,7 @@ const Login = () => {
           initialValues={{ email: '', password: '' }}
           validationSchema={loginSchema}
           onSubmit={handleSubmit}
+        
         >
           {({ isSubmitting }) => (
             <Form>
@@ -60,10 +65,11 @@ const Login = () => {
                 <Field
                   type="email"
                   name="email"
+                  onInput={handleInput}
                   placeholder=""
                   className="form-input"
                 />
-                <label>Email</label>
+                <label className='special-label'>Email</label>
               
               </div>
               <ErrorMessage name="email" component="div" className="error-text" />
@@ -72,10 +78,11 @@ const Login = () => {
                 <Field
                   type={passwordVisible ? 'text' : 'password'}
                   name="password"
+                  onInput={handleInput}
                   placeholder=""
                   className="form-input"
                 />
-                <label>Password</label>
+                <label className='special-label'>Password</label>
                 <span
                   className="eye-icon"
                   onClick={togglePasswordVisibility}

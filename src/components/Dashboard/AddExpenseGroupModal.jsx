@@ -58,7 +58,7 @@ const AddExpenseGroupModal = ({ groupId = null, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!amount || !description || !selectedGroup || !selectedMembers.length) return 'Please fill all the details';
+    // if (!amount || !description || !selectedGroup || !selectedMembers.length) return 'Please fill all the details';
 
     addExpenseMutation.mutate({
       groupId: selectedGroup,

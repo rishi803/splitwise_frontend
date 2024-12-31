@@ -2,11 +2,12 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import {useState} from 'react';
 import { FaPlus } from 'react-icons/fa';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import api from '../utils/api';
 import AddExpenseModal from '../components/Dashboard/AddExpenseModal';
 import './GroupDetails.css';
 
- const GroupDetails = () => {
+export const GroupDetails = () => {
   const { id } = useParams();
   const [showExpenseModal, setShowExpenseModal] = useState(false);
 
@@ -20,9 +21,12 @@ import './GroupDetails.css';
     () => api.get(`/groups/${id}/expenses`)
   );
 
- 
+  const { data: chartData, isLoading: chartLoading } = useQuery(
+    ['expenseChart', id],
+    () => api.get(`/groups/${id}/expenses/chart`)
+  );
 
-  if (groupLoading || expensesLoading) {
+  if (groupLoading || expensesLoading || chartLoading) {
     return <div className="loading">Loading...</div>;
   }
 
@@ -34,14 +38,25 @@ import './GroupDetails.css';
         <div className="total-expense">
           Total Expenses: ${group?.data.totalExpense}
         </div>
-
         <button 
           className="add-expense-button"
           onClick={() => setShowExpenseModal(true)}
         >
-         <FaPlus /> 
+          Add Expense
         </button>
-        
+      </div>
+
+      <div className="expense-chart">
+        <h2>Expense History</h2>
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={chartData?.data}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Line type="monotone" dataKey="amount" stroke="#8884d8" />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
 
       <div className="expense-list">
@@ -66,8 +81,6 @@ import './GroupDetails.css';
           onClose={() => setShowExpenseModal(false)} 
         />
       )}
-     
-
     </div>
   );
 };

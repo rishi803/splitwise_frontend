@@ -21,6 +21,7 @@ const AddExpenseModal = ({ onClose }) => {
       onSuccess: () => {
         queryClient.invalidateQueries(['groupExpenses', selectedGroup]);
         queryClient.invalidateQueries('groups');
+        queryClient.invalidateQueries('group');
         onClose();
       },
     }
@@ -29,7 +30,7 @@ const AddExpenseModal = ({ onClose }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!amount || !description || !selectedGroup) return 'Please fill all fields';
-
+ console.log('add expense rishi')
     addExpenseMutation.mutate({
       groupId: selectedGroup,
       amount: parseFloat(amount),
@@ -70,7 +71,7 @@ const AddExpenseModal = ({ onClose }) => {
               className="form-input"
               required
               min="0"
-              step="0.01"
+              step="10"
             />
           </div>
 

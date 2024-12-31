@@ -1,10 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaUsers, FaMoneyBillWave } from 'react-icons/fa';
-import './Dashboard.css';
+// import ExpenseChart from './ExpenseChart';
+import AddExpenseModal from './AddExpenseGroupModal';
+import './GroupCard.css';
 
 const GroupCard = ({ group }) => {
   const navigate = useNavigate();
+  // const [showChart, setShowChart] = useState(false);
+  const [showExpenseModal, setShowExpenseModal] = useState(false);
 
   return (
     <div className="group-card">
@@ -24,8 +28,26 @@ const GroupCard = ({ group }) => {
         >
           View Details
         </button>
+        <button 
+          className="add-expense"
+          onClick={() => setShowExpenseModal(true)}
+        >
+          Add Expense
+        </button>
+        {/* <button 
+          className="toggle-chart"
+          onClick={() => setShowChart(!showChart)}
+        >
+          {showChart ? 'Hide Chart' : 'Show Chart'}
+        </button> */}
       </div>
-      
+      {/* {showChart && <ExpenseChart groupId={group.id} />} */}
+      {showExpenseModal && (
+        <AddExpenseModal 
+          groupId={group.id} 
+          onClose={() => setShowExpenseModal(false)} 
+        />
+      )}
     </div>
   );
 };

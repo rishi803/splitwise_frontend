@@ -15,7 +15,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard">
       <div className="welcome-header">
-        <h1>Welcome, {user.name}!</h1>
+        <h1>Welcome, {user.name} !</h1>
         <button 
           className="create-group-button"
           onClick={() => setShowGroupModal(true)}

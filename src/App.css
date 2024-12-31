@@ -3,7 +3,7 @@
   text-align: center;
   --primary-color: #0056d2;
   --primary-hover-color: #003e99; 
-  --background-color: #f4f7fa; 
+  --background-color: #f7fafd; 
   --form-background: #ffffff; 
   --border-color: #b8bfc4; 
   --error-color: #e63946;
@@ -16,18 +16,18 @@
 
 body {
   font-family: 'Roboto', sans-serif;
-  background-color: var(--background-color);
+  
   color: var(--text-color);
   margin: 0;
   padding: 0;
   height: 100vh;
   width:100%;
   margin:auto;
+  background-color: rgb(236, 242, 247) !important;
 }
 
 .main-container-splitwise{
   max-width:1200px;
   width: 100%; 
   margin:auto;
-  /* background-color: red; */
 }

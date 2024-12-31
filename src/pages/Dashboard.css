@@ -1,9 +1,13 @@
 .dashboard {
     padding: 2rem;
     max-width: 1200px;
-    margin: 40px auto;
+    margin: 70px auto;
     position: relative;
   }
+
+  /* *{
+    border:1px solid red;
+  } */
   
   .welcome-header {
     display: flex;
@@ -34,13 +38,8 @@
     gap: 1.5rem;
     margin-bottom: 2rem;
   }
+
   
-  .group-card {
-    background: rgb(233, 198, 198);
-    border-radius: 8px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
   
   .group-info {
     display: flex;
@@ -100,8 +99,9 @@
   }
   
   @media (max-width: 768px) {
-    .dashboard {
-      padding: 1rem;
+   
+    .dashboard{
+      margin-top: 80px;
     }
   
     .group-grid {
@@ -118,4 +118,13 @@
     .add-expense-button span{
        display:none;
       }
+  }
+
+  @media (max-width: 468px){
+    .welcome-header{
+      flex-direction: column;
+      justify-content: center;
+      margin-bottom: 3rem;
+    }
+
   }
