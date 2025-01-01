@@ -85,7 +85,7 @@ const Signup = () => {
 
               <div className="form-group">
                 <Field
-                  type="password"
+                  type={passwordVisible ? 'text' : 'password'}
                   name="password"
                   placeholder=""
                   className="form-input"

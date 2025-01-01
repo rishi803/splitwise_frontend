@@ -1,27 +1,39 @@
+import { useDispatch } from 'react-redux';
+import { setCurrentPage } from '../../store/slices/pageSlice';
+
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
-    return (
-      <div className="pagination">
-        <button
-          onClick={() => onPageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="page-button"
-        >
-          Previous
-        </button>
-        
-        <span className="page-info">
-          Page {currentPage} of {totalPages}
-        </span>
-        
-        <button
-          onClick={() => onPageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="page-button"
-        >
-          Next
-        </button>
-      </div>
-    );
+  const dispatch = useDispatch();
+
+  const handlePageChange = (newPage) => {
+    // Dispatch the new page to the Redux store
+    dispatch(setCurrentPage(newPage));
+    // Call the onPageChange function to update the local state
+    onPageChange(newPage);
   };
-  
-  export default Pagination;
+
+  return (
+    <div className="pagination">
+      <button
+        onClick={() => handlePageChange(currentPage - 1)}
+        disabled={currentPage === 1}
+        className="page-button"
+      >
+        Previous
+      </button>
+      
+      <span className="page-info">
+        Page {currentPage} of {totalPages}
+      </span>
+      
+      <button
+        onClick={() => handlePageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
+        className="page-button"
+      >
+        Next
+      </button>
+    </div>
+  );
+};
+
+export default Pagination;

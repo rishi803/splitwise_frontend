@@ -1,34 +1,64 @@
-import { useState, useCallback } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
-import { debounce } from 'lodash';
-import api from '../../utils/api';
-import './AddExpenseModal.css';
+import { useState, useCallback, useMemo } from "react";
+import { useMutation, useQueryClient } from "react-query";
+import { useSelector } from "react-redux";
+import { debounce } from "lodash";
+import api from "../../utils/api";
+import { toast } from 'react-toastify';
+
+import "./AddExpenseModal.css";
 
 const CreateGroupModal = ({ onClose }) => {
-  const [groupName, setGroupName] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const { user } = useSelector((state) => state.auth);
+
+  const [groupName, setGroupName] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [allSearchResults, setAllSearchResults] = useState([]); 
+  const [selectedUsers, setSelectedUsers] = useState([user]);
   const queryClient = useQueryClient();
+
+  const notify = () => toast.success(`Group ${groupName} created successfully!`, {
+    autoClose: 2000,
+  });
 
   const searchUsers = useCallback(
     debounce(async (term) => {
       if (term.length < 2) return;
       try {
         const { data } = await api.get(`/users/search?q=${term}&limit=10`);
-        setSearchResults(data.users);
+        setAllSearchResults(data.users); // Store the raw results
       } catch (error) {
-        console.error('Search failed:', error);
+        console.error("Search failed:", error);
       }
     }, 300),
     []
   );
 
+  const handleSearchChange = (e) => {
+    const term = e.target.value;
+    setSearchTerm(term);
+    searchUsers(term);
+  };
+
+  const handleSelectUser  = (user) => {
+    setSelectedUsers((prev) => [...prev, user]);
+  };
+
+  const handleDeselectUser  = (user) => {
+    setSelectedUsers((prev) => prev.filter((u) => u.id !== user.id));
+  };
+
+  const filteredSearchResults = useMemo(() => {
+    return allSearchResults.filter(
+      (user) => !selectedUsers.some((selected) => selected.id === user.id)
+    );
+  }, [allSearchResults, selectedUsers]);
+
   const createGroupMutation = useMutation(
-    (groupData) => api.post('/groups', groupData),
+    (groupData) => api.post("/groups", groupData),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries('groups');
+        queryClient.invalidateQueries("groups");
+        notify();
         onClose();
       },
     }
@@ -38,7 +68,7 @@ const CreateGroupModal = ({ onClose }) => {
     e.preventDefault();
     createGroupMutation.mutate({
       name: groupName,
-      memberIds: selectedUsers.map(user => user.id)
+      memberIds: selectedUsers.map((user) => user.id),
     });
   };
 
@@ -62,41 +92,36 @@ const CreateGroupModal = ({ onClose }) => {
               type="text"
               placeholder="Search friends..."
               value={searchTerm}
-              onChange={(e) => {
-                setSearchTerm(e.target.value);
-                searchUsers(e.target.value);
-              }}
+              onChange={handleSearchChange}
               className="form-input"
             />
           </div>
 
-          {searchResults.length > 0 && (
-            <div className="search-results">
-              {searchResults.map(user => (
-                <div
-                  key={user.id}
-                  className="search-result-item"
-                  onClick={() => {
-                    setSelectedUsers(prev => [...prev, user]);
-                    setSearchResults([]);
-                    setSearchTerm('');
-                  }}
-                >
-                  {user.name} ({user.email})
-                </div>
-              ))}
-            </div>
+          {searchTerm.length > 1 && filteredSearchResults.length === 0 ? (
+            <div>No friends found</div>
+          ) : (
+            filteredSearchResults.length > 0 && (
+              <div className="search-results">
+                {filteredSearchResults.map((user) => (
+                  <div
+                    key={user.id}
+                    className="search-result-item"
+                    onClick={() => handleSelectUser (user)}
+                  >
+                    {user.name} ({user.email})
+                  </div>
+                ))}
+              </div>
+            )
           )}
 
           <div className="selected-users">
-            {selectedUsers.map(user => (
+            {selectedUsers.length > 1 && selectedUsers.map((user) => (
               <div key={user.id} className="selected-user">
                 {user.name}
                 <button
                   type="button"
-                  onClick={() => setSelectedUsers(prev => 
-                    prev.filter(u => u.id !== user.id)
-                  )}
+                  onClick={() => handleDeselectUser (user)}
                 >
                   ×
                 </button>
@@ -108,7 +133,7 @@ const CreateGroupModal = ({ onClose }) => {
             <button type="submit" className="submit-button">
               Create Group
             </button>
-            <button type="button" onClick={onClose} className="cancel-button">
+            <button type="button" onClick={onClose } className="cancel-button">
               Cancel
             </button>
           </div>

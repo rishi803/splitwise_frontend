@@ -4,7 +4,7 @@ import { FaPlus } from 'react-icons/fa';
 import { FaUserGroup } from "react-icons/fa6";
 import GroupList from '../components/Dashboard/GroupList';
 import CreateGroupModal from '../components/Dashboard/CreateGroupModal';
-import AddExpenseModal from '../components/Dashboard/AddExpenseModal';
+import AddExpenseModal from '../components/Dashboard/AddExpenseGroupModal';
 import './Dashboard.css';
 
 const Dashboard = () => {

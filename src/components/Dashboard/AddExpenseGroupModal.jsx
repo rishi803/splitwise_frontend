@@ -6,15 +6,20 @@ import './AddExpenseModal.css';
 
 const AddExpenseGroupModal = ({ groupId = null, onClose }) => {
   const { user } = useSelector((state) => state.auth);
+  const {currentPage}= useSelector((state)=>state.page)
+
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
   const [selectedGroup, setSelectedGroup] = useState(groupId);
+  const [paidBy, setPaidBy] = useState(user.id);
+  
   const [selectedMembers, setSelectedMembers] = useState([]);
+
   const queryClient = useQueryClient();
 
   const { data: groups } = useQuery(
-    'userGroups',
-    () => api.get('/groups'),
+    ["groups", currentPage],
+    () => api.get(`/groups?page=${currentPage}`),
     { enabled: !groupId }
   );
 
@@ -29,6 +34,7 @@ const AddExpenseGroupModal = ({ groupId = null, onClose }) => {
       setSelectedGroup(groupId);
     }
   }, [groupId]);
+
 
   const addExpenseMutation = useMutation(
     (expenseData) => api.post('/expenses', expenseData),
@@ -60,13 +66,15 @@ const AddExpenseGroupModal = ({ groupId = null, onClose }) => {
     e.preventDefault();
     // if (!amount || !description || !selectedGroup || !selectedMembers.length) return 'Please fill all the details';
 
+    const memberIds = groupMembers?.data.map(member => member.id) || []; // currently split among all the members in future use selectedMembers state to only select with specific members
+
     addExpenseMutation.mutate({
       groupId: selectedGroup,
       amount: parseFloat(amount),
       description,
-      paidBy: user.id,
+      paidBy,
       splitType: 'EQUAL',
-      splitWith: selectedMembers
+      splitWith: memberIds
     });
   };
 
@@ -75,6 +83,7 @@ const AddExpenseGroupModal = ({ groupId = null, onClose }) => {
       <div className="modal-content">
         <h2>Add New Expense</h2>
         <form onSubmit={handleSubmit}>
+
           {!groupId && (
             <div className="form-group">
               <select
@@ -96,7 +105,7 @@ const AddExpenseGroupModal = ({ groupId = null, onClose }) => {
           <div className="form-group">
             <input
               type="number"
-              placeholder="Amount"
+              placeholder="Enter amount"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               className="form-input"
@@ -117,7 +126,7 @@ const AddExpenseGroupModal = ({ groupId = null, onClose }) => {
             />
           </div>
 
-          {selectedGroup && (
+          {/* {selectedGroup && (
             <div className="form-group">
               <label>Split with:</label>
               <div className="member-list">
@@ -142,7 +151,29 @@ const AddExpenseGroupModal = ({ groupId = null, onClose }) => {
                 ))}
               </div>
             </div>
-          )}
+          )} */}
+
+          {
+            selectedGroup && (
+              <div className='paid-by-container'>
+                <label>Paid By :</label>
+                <select
+                 value={paidBy}
+                 onChange={(e)=> setPaidBy(e.target.value)}
+                 className="form-input"
+                 required
+                >
+                 {
+                  groupMembers?.data.map(member=>(
+                    <option key={member.id} value={member.id}>
+                      {member.name}
+                    </option>
+                  ))
+                 }
+                </select>
+              </div>
+            )
+          }
 
           <div className="modal-actions">
             <button type="submit" className="submit-button">

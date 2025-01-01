@@ -1,28 +1,35 @@
-import { useParams } from 'react-router-dom';
-import { useQuery } from 'react-query';
-import {useState} from 'react';
-import { FaPlus } from 'react-icons/fa';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import api from '../utils/api';
-import AddExpenseModal from '../components/Dashboard/AddExpenseModal';
-import './GroupDetails.css';
+import { useParams } from "react-router-dom";
+import { useQuery } from "react-query";
+import { useState } from "react";
+import { FaPlus, FaUsers, FaMoneyBillWave } from "react-icons/fa";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+import api from "../utils/api";
+import AddExpenseModal from "../components/Dashboard/AddExpenseGroupModal";
+import "./GroupDetails.css";
 
 export const GroupDetails = () => {
   const { id } = useParams();
   const [showExpenseModal, setShowExpenseModal] = useState(false);
 
-  const { data: group, isLoading: groupLoading } = useQuery(
-    ['group', id],
-    () => api.get(`/groups/${id}`)
+  const { data: group, isLoading: groupLoading } = useQuery(["group", id], () =>
+    api.get(`/groups/${id}`)
   );
 
   const { data: expenses, isLoading: expensesLoading } = useQuery(
-    ['groupExpenses', id],
+    ["groupExpenses", id],
     () => api.get(`/groups/${id}/expenses`)
   );
 
   const { data: chartData, isLoading: chartLoading } = useQuery(
-    ['expenseChart', id],
+    ["expenseChart", id],
     () => api.get(`/groups/${id}/expenses/chart`)
   );
 
@@ -32,18 +39,37 @@ export const GroupDetails = () => {
 
   return (
     <div className="group-details">
-      <h1>{group?.data.name}</h1>
-      
-      <div className="expense-summary">
-        <div className="total-expense">
-          Total Expenses: ${group?.data.totalExpense}
+      <header className="group-header">
+        <h1>{group?.data.name}</h1>
+        <div className="group-stats">
+          <div className="stat">
+            <FaUsers size={20} />
+            <span>{group?.data.memberCount} members</span>
+          </div>
+          <div className="stat">
+            <FaMoneyBillWave size={20} />
+            <span>${group?.data.totalExpense}</span>
+          </div>
         </div>
-        <button 
-          className="add-expense-button"
-          onClick={() => setShowExpenseModal(true)}
-        >
-          Add Expense
-        </button>
+      </header>
+
+      <div className="member-balances">
+        <h2>Member Balances</h2>
+        <div className="balance-list">
+          {group?.data.memberBalances.map((member) => (
+            <div key={member.id} className="balance-item">
+              <span className="member-name">{member.username}</span>
+              <span
+                className={`balance-amount ${
+                  member.balance >= 0 ? "positive" : "negative"
+                }`}
+              >
+                {member.balance >= 0 ? "gets back" : "owes"} $
+                {Math.abs(member.balance).toFixed(2)}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="expense-chart">
@@ -54,14 +80,22 @@ export const GroupDetails = () => {
             <XAxis dataKey="date" />
             <YAxis />
             <Tooltip />
-            <Line type="monotone" dataKey="amount" stroke="#8884d8" />
+            <Line type="monotone" dataKey="amount" stroke="#6366f1" />
           </LineChart>
         </ResponsiveContainer>
       </div>
 
       <div className="expense-list">
-        <h2>Recent Expenses</h2>
-        {expenses?.data.map(expense => (
+        <div className="expense-header">
+          <h2>Recent Expenses</h2>
+          <button
+            className="add-expense-button"
+            onClick={() => setShowExpenseModal(true)}
+          >
+            <FaPlus /> <span>Add Expense</span>
+          </button>
+        </div>
+        {expenses?.data.map((expense) => (
           <div key={expense.id} className="expense-item">
             <div className="expense-info">
               <span className="expense-description">{expense.description}</span>
@@ -76,9 +110,9 @@ export const GroupDetails = () => {
       </div>
 
       {showExpenseModal && (
-        <AddExpenseModal 
+        <AddExpenseModal
           groupId={id}
-          onClose={() => setShowExpenseModal(false)} 
+          onClose={() => setShowExpenseModal(false)}
         />
       )}
     </div>

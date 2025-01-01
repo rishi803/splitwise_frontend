@@ -3,6 +3,78 @@
   margin-top: 60px;
 }
 
+
+.group-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.group-header h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #1a1a1a;
+}
+
+.group-stats {
+  display: flex;
+  gap: 2rem;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #4b5563;
+}
+
+/* Member Balances Section */
+.member-balances {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.member-balances h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: #1a1a1a;
+}
+
+.balance-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.balance-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.member-name {
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.balance-amount {
+  font-weight: 500;
+}
+
+.balance-amount.positive {
+  color: #059669;
+}
+
+.balance-amount.negative {
+  color: #dc2626;
+}
+
 .expense-summary {
   display: flex;
   justify-content: space-between;
