@@ -48,7 +48,7 @@ export const GroupDetails = () => {
           </div>
           <div className="stat">
             <FaMoneyBillWave size={20} />
-            <span>${group?.data.totalExpense}</span>
+            <span>₹{group?.data.totalExpense}</span>
           </div>
         </div>
       </header>
@@ -64,7 +64,7 @@ export const GroupDetails = () => {
                   member.balance >= 0 ? "positive" : "negative"
                 }`}
               >
-                {member.balance >= 0 ? "gets back" : "owes"} $
+                {member.balance >= 0 ? "gets back" : "owes"} ₹
                 {Math.abs(member.balance).toFixed(2)}
               </span>
             </div>
@@ -99,7 +99,7 @@ export const GroupDetails = () => {
           <div key={expense.id} className="expense-item">
             <div className="expense-info">
               <span className="expense-description">{expense.description}</span>
-              <span className="expense-amount">${expense.amount}</span>
+              <span className="expense-amount">₹{expense.amount}</span>
             </div>
             <div className="expense-meta">
               <span>Paid by {expense.paid_by_name}</span>

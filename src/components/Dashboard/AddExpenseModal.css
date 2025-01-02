@@ -38,6 +38,17 @@
     width:96%;
   }
 
+  /* *{
+    border: 1px solid red;
+  } */
+
+  .form-group-error{
+    color:red;
+    margin-top:-15px;
+    margin-bottom:10px;
+    text-align: start;
+    margin-left: 14px;
+  }
   
   .search-results {
     border: 1px solid #ccc;

@@ -1,9 +1,9 @@
 import { useState, useCallback, useMemo } from "react";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useSelector } from "react-redux";
 import { debounce } from "lodash";
 import api from "../../utils/api";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 import "./AddExpenseModal.css";
 
@@ -11,24 +11,21 @@ const CreateGroupModal = ({ onClose }) => {
   const { user } = useSelector((state) => state.auth);
 
   const [groupName, setGroupName] = useState("");
+  const [groupNameError, setGroupNameError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [allSearchResults, setAllSearchResults] = useState([]); 
-  const [selectedUsers, setSelectedUsers] = useState([user]);
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const [selectedUsers, setSelectedUsers] = useState([]);
   const queryClient = useQueryClient();
 
-  const notify = () => toast.success(`Group ${groupName} created successfully!`, {
-    autoClose: 2000,
-  });
+  const notify = () =>
+    toast.success(`Group ${groupName} created successfully!`, {
+      autoClose: 2000,
+    });
 
-  const searchUsers = useCallback(
-    debounce(async (term) => {
-      if (term.length < 2) return;
-      try {
-        const { data } = await api.get(`/users/search?q=${term}&limit=10`);
-        setAllSearchResults(data.users); // Store the raw results
-      } catch (error) {
-        console.error("Search failed:", error);
-      }
+  // Debounce search term update
+  const debounceSearch = useCallback(
+    debounce((term) => {
+      setDebouncedSearchTerm(term);
     }, 300),
     []
   );
@@ -36,22 +33,33 @@ const CreateGroupModal = ({ onClose }) => {
   const handleSearchChange = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
-    searchUsers(term);
+    debounceSearch(term); // Update the debounced search term
   };
 
-  const handleSelectUser  = (user) => {
+  // Fetch users based on debounced search term
+  const { data: searchResults = [] } = useQuery(
+    ["searchFriends", debouncedSearchTerm],
+    () => api.get(`/users/search?q=${debouncedSearchTerm}&limit=10`).then((res) => res.data.users),
+    {
+      enabled: debouncedSearchTerm.length > 0, // Only fetch if the search term is valid
+    }
+  );
+
+  const handleSelectUser = (user) => {
     setSelectedUsers((prev) => [...prev, user]);
   };
 
-  const handleDeselectUser  = (user) => {
+  const handleDeselectUser = (user) => {
     setSelectedUsers((prev) => prev.filter((u) => u.id !== user.id));
   };
 
   const filteredSearchResults = useMemo(() => {
-    return allSearchResults.filter(
-      (user) => !selectedUsers.some((selected) => selected.id === user.id)
+    return searchResults.filter(
+      (userItem) =>
+        user.id !== userItem.id &&
+        !selectedUsers.some((selected) => selected.id === userItem.id)
     );
-  }, [allSearchResults, selectedUsers]);
+  }, [searchResults, selectedUsers]);
 
   const createGroupMutation = useMutation(
     (groupData) => api.post("/groups", groupData),
@@ -64,14 +72,32 @@ const CreateGroupModal = ({ onClose }) => {
     }
   );
 
+  const handleGroupNameChange = (e) => {
+    const value = e.target.value;
+    setGroupName(value);
+    if (value.trim().length < 2) {
+      setGroupNameError("Group name must be at least 2 characters long.");
+    } else {
+      setGroupNameError("");
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (groupName.trim().length < 2) {
+      setGroupNameError("Group name must be at least 2 characters long.");
+      return;
+    }
+    const allMembers = selectedUsers.map((user) => user.id);
     createGroupMutation.mutate({
       name: groupName,
-      memberIds: selectedUsers.map((user) => user.id),
+      memberIds: [user.id, ...allMembers],
     });
   };
 
+  const isSubmitDisabled =  createGroupMutation.isLoading;
+
+  console.log("is ",isSubmitDisabled)
   return (
     <div className="modal-overlay">
       <div className="modal-content">
@@ -82,10 +108,12 @@ const CreateGroupModal = ({ onClose }) => {
               type="text"
               placeholder="Group Name"
               value={groupName}
-              onChange={(e) => setGroupName(e.target.value)}
-              className="form-input"
+              onChange={handleGroupNameChange}
+              className={`form-input`}
             />
           </div>
+          <div className="form-group-error"> {groupNameError && <span className="error-message-text">{groupNameError}</span>}</div>
+         
 
           <div className="form-group">
             <input
@@ -106,7 +134,7 @@ const CreateGroupModal = ({ onClose }) => {
                   <div
                     key={user.id}
                     className="search-result-item"
-                    onClick={() => handleSelectUser (user)}
+                    onClick={() => handleSelectUser(user)}
                   >
                     {user.name} ({user.email})
                   </div>
@@ -116,24 +144,26 @@ const CreateGroupModal = ({ onClose }) => {
           )}
 
           <div className="selected-users">
-            {selectedUsers.length > 1 && selectedUsers.map((user) => (
-              <div key={user.id} className="selected-user">
-                {user.name}
-                <button
-                  type="button"
-                  onClick={() => handleDeselectUser (user)}
-                >
-                  ×
-                </button>
-              </div>
-            ))}
+            {selectedUsers.length > 0 &&
+              selectedUsers.map((user) => (
+                <div key={user.id} className="selected-user">
+                  {user.name}
+                  <button type="button" onClick={() => handleDeselectUser(user)}>
+                    ×
+                  </button>
+                </div>
+              ))}
           </div>
 
           <div className="modal-actions">
-            <button type="submit" className="submit-button">
-              Create Group
+            <button
+              type="submit"
+              className="submit-button"
+              disabled={isSubmitDisabled}
+            >
+              {createGroupMutation.isLoading ? "Creating..." : "Create Group"}
             </button>
-            <button type="button" onClick={onClose } className="cancel-button">
+            <button type="button" onClick={onClose} className="cancel-button">
               Cancel
             </button>
           </div>

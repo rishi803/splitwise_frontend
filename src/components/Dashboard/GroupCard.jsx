@@ -22,13 +22,16 @@ const GroupCard = ({ group }) => {
     autoClose: 2000,
   });
 
+  const notifyDelete= ()=> toast.error(`You are not authorised to delete this group.`,)
+
   const deleteGroup= async(id)=>{
        try{
         await api.delete(`/groups/${id}`);
         notify();
        }
        catch(error){
-           alert('Error deleting group');
+       
+          notifyDelete(error.response.data.message);
        }
   }
 
@@ -49,7 +52,7 @@ const GroupCard = ({ group }) => {
           <FaUsers /> {group.memberCount} members
         </div>
         <div>
-          <FaMoneyBillWave /> Total: ${group.totalExpense}
+          <FaMoneyBillWave /> Total: ₹{group.totalExpense}
         </div>
       </div>
       <div className="group-actions">
