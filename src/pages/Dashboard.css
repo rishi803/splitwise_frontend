@@ -1,7 +1,7 @@
 .dashboard {
     padding: 2rem;
     max-width: 1200px;
-    margin: 70px auto;
+    margin: 100px auto;
     position: relative;
   }
 
@@ -10,29 +10,39 @@
   } */
   
   .welcome-header {
-    display: flex;
+    display:flex;
     justify-content: space-between;
-    flex-wrap: wrap;
-    gap:0.6rem;
-    margin: auto;
-    align-items: center;
     margin-bottom: 2rem;
+    
+  }
+
+  .group-search-container{
+      max-width:400px;
+      width: 100%;
   }
 
   .create-group-button{
-    padding: 10px 20px;
     background-color: var(--primary-color);
     color: white;
     border: none;
     border-radius: 10px;
+    max-width:180px;
+    width:100%;
     display: flex;
+    justify-content: center;
     align-items: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     cursor: pointer;
+    transition: all 0.3s ease;
+    will-change: transform;
   }
 
   .create-group-button span{
-    margin-left: 5px;
+    margin-left: 7px;
+  }
+
+  .create-group-button:hover{
+    transform: scale(1.05);
   }
 
   /* *{
@@ -89,6 +99,10 @@
     gap: 1rem;
     padding: 1rem 0;
   }
+
+  .page-info{
+    color:white;
+  }
   
   .page-button {
     padding: 0.6rem 1.2rem;
@@ -130,6 +144,8 @@
     align-items: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     cursor: pointer;
+    transition: all 0.3s ease;
+    will-change: transform;
   }
 
   .add-expense-button span{
@@ -137,10 +153,26 @@
   }
   
   .add-expense-button:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
   
   @media (max-width: 768px) {
+
+    .welcome-header{
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 3rem;
+    }
+
+    .search-input-container{
+      width: 100%;
+    }
+
+    .create-group-button{
+      padding: 10px 20px;
+      margin-top:20px;
+    }
    
     .dashboard{
       margin-top: 80px;

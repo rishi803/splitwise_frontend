@@ -51,6 +51,8 @@ const Login = () => {
   return (
     <div className="auth-container">
       <div className="auth-card">
+      <div className="auth-card-background"></div>
+      <div className="auth-card-content">
         <h2>Login</h2>
         {serverError && <div className="error-message">{serverError}</div>}
         <Formik
@@ -111,6 +113,7 @@ const Login = () => {
           </span>
         </p>
       </div>
+    </div>
     </div>
   );
 };

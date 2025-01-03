@@ -12,8 +12,9 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import api from "../utils/api";
-import AddExpenseModal from "../components/Dashboard/AddExpenseGroupModal";
+import AddExpenseModal from "../components/Dashboard/Modal/AddExpenseGroupModal";
 import "./GroupDetails.css";
+
 
 export const GroupDetails = () => {
   const { id } = useParams();
@@ -52,6 +53,8 @@ export const GroupDetails = () => {
           </div>
         </div>
       </header>
+
+   
 
       <div className="member-balances">
         <h2>Member Balances</h2>

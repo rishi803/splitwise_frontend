@@ -2,7 +2,7 @@ import { useState, useCallback, useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useSelector } from "react-redux";
 import { debounce } from "lodash";
-import api from "../../utils/api";
+import api from "../../../utils/api";
 import { toast } from "react-toastify";
 
 import "./AddExpenseModal.css";
@@ -37,9 +37,9 @@ const CreateGroupModal = ({ onClose }) => {
   };
 
   // Fetch users based on debounced search term
-  const { data: searchResults = [] } = useQuery(
+  const { data: searchFriends = [] } = useQuery(
     ["searchFriends", debouncedSearchTerm],
-    () => api.get(`/users/search?q=${debouncedSearchTerm}&limit=10`).then((res) => res.data.users),
+    () => api.get(`/users/?search=${debouncedSearchTerm}&limit=10`).then((res) => res.data.users),
     {
       enabled: debouncedSearchTerm.length > 0, // Only fetch if the search term is valid
     }
@@ -54,12 +54,12 @@ const CreateGroupModal = ({ onClose }) => {
   };
 
   const filteredSearchResults = useMemo(() => {
-    return searchResults.filter(
+    return searchFriends.filter(
       (userItem) =>
         user.id !== userItem.id &&
         !selectedUsers.some((selected) => selected.id === userItem.id)
     );
-  }, [searchResults, selectedUsers]);
+  }, [searchFriends, selectedUsers]);
 
   const createGroupMutation = useMutation(
     (groupData) => api.post("/groups", groupData),

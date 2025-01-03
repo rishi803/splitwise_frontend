@@ -26,6 +26,15 @@
   opacity: 1;
 }
 
+
+.group-card-heading{
+  padding: 10px;
+  font-size: 16px;
+  white-space: normal; 
+  overflow-wrap: break-word; 
+  word-wrap: break-word;
+}
+
 .group-card h3 {
   color: #1a1a1a;
   font-size: 1.5rem;
@@ -74,15 +83,15 @@
 }
 
 .view-details {
-  background: #0056d2;
+  background: var(--primary-color);
   color: white;
   box-shadow: 0 2px 4px rgba(0, 86, 210, 0.15);
+  will-change: transform;
+  transition: all 0.3s ease;
 }
 
 .view-details:hover {
-  background: #004abc;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 86, 210, 0.2);
+ transform: scale(1.05);
 }
 
 .delete-card-icon{
@@ -98,24 +107,35 @@
 .delete-card-icon svg{
    color:rgb(243, 35, 35);
     font-size:1.2rem;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
+    will-change: transform;
 }
 
 .delete-card-icon svg:hover{
   transform: scale(1.1);
 }
 
+
+.confirm-delete-container{
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  bottom:0;
+  backdrop-filter: blur(40px);
+}
+
 .add-expense {
   background: white;
-  color: #0056d2;
-  border: 2px solid #0056d2 !important;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color) !important;
   box-shadow: 0 2px 4px rgba(0, 86, 210, 0.08);
+  will-change: transform;
+  transition: all 0.3s ease;
 }
 
 .add-expense:hover {
-  background: rgba(0, 86, 210, 0.04);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 86, 210, 0.12);
+  transform: scale(1.05);
 }
 
 @media (max-width: 768px) {

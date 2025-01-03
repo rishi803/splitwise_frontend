@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "react-query";
 import { useSearchParams } from "react-router-dom";
-import api from "../../utils/api";
+import api from "../../../utils/api";
 import GroupCard from "./GroupCard";
-import Pagination from "../common/Pagination";
-import "./Dashboard.css";
+import Pagination from "../../common/Pagination";
+import "../../../pages/Dashboard.css";
 
 const ITEMS_PER_PAGE = 6;
 

@@ -4,6 +4,7 @@ import { FaUserPlus, FaPlus } from "react-icons/fa";
 import NewGroupDialog from '../GroupFormation/AddNewGroup';
 
 import './Dashboard.css'
+import GroupSearch from "./GroupSearch";
 const Dashboard = () => {
 
   const [isOpen, setIsOpen] = useState(false); 
@@ -30,10 +31,7 @@ const Dashboard = () => {
         </button>
       </div>
 
-      <div>
-        <h2 className="dashboard-subtitle">Welcome {currentUser.username}</h2>
-      </div>
-
+      
       <div className="dashboard-grid">
         {groups.map(group => (
           <div key={group.id} className="dashboard-card">

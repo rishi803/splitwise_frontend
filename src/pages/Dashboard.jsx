@@ -2,20 +2,22 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { FaPlus } from 'react-icons/fa';
 import { FaUserGroup } from "react-icons/fa6";
-import GroupList from '../components/Dashboard/GroupList';
-import CreateGroupModal from '../components/Dashboard/CreateGroupModal';
-import AddExpenseModal from '../components/Dashboard/AddExpenseGroupModal';
+import GroupList from '../components/Dashboard/Group/GroupList';
+import CreateGroupModal from '../components/Dashboard/Modal/CreateGroupModal';
+import AddExpenseModal from '../components/Dashboard/Modal/AddExpenseGroupModal';
+import GroupSearch from '../components/Dashboard/Group/GroupSearch';
 import './Dashboard.css';
 
 const Dashboard = () => {
-  const { user } = useSelector((state) => state.auth);
   const [showGroupModal, setShowGroupModal] = useState(false);
   const [showExpenseModal, setShowExpenseModal] = useState(false);
 
   return (
     <div className="dashboard">
       <div className="welcome-header">
-        <h1>Welcome, {user.name} !</h1>
+       <div className='group-search-container'>
+        <GroupSearch/>
+       </div>
         <button 
           className="create-group-button"
           onClick={() => setShowGroupModal(true)}

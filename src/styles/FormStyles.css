@@ -16,6 +16,8 @@
   max-width: 400px;
 }
 
+
+
 .auth-card h2 {
   margin-bottom: 1.5rem;
   color: var(--primary-color);
@@ -56,11 +58,6 @@
   padding: 0 5px;
 }
 
-/* .password-group label {
-  position: absolute;
-  left: 16px;
-  top: 30%;
-} */
 
 .password-group {
   position: relative;
@@ -117,6 +114,7 @@
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s;
+  will-change: transform;
 }
 
 .auth-button:hover {

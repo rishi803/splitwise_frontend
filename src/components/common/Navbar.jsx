@@ -15,7 +15,7 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <div className="navbar-brand">
+      <div className="navbar-brand" onClick={()=> navigate('/dashboard?page=1')}>
         Splitwise
       </div>
       <div className="navbar-buttons">

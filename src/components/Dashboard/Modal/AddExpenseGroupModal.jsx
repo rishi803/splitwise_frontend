@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useSelector } from "react-redux";
-import api from "../../utils/api";
+import api from "../../../utils/api";
 import "./AddExpenseModal.css";
 
 const AddExpenseGroupModal = ({ groupId = null, onClose }) => {
