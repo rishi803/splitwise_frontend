@@ -1,15 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit';
-import {QueryClient} from 'react-query';
+import { QueryClient } from 'react-query';
 
 const queryClient = new QueryClient();
 
+const storedUser  = JSON.parse(localStorage.getItem('user'));
 
-const storedUser = JSON.parse(localStorage.getItem('user'));
+
+const handleAuthSuccess = (state, action) => {
+  state.loading = false;
+  state.isAuthenticated = true;
+  state.user = action.payload.user;
+  state.error = null;
+
+  localStorage.setItem('accessToken', action.payload.accessToken);
+  localStorage.setItem('user', JSON.stringify(action.payload.user));
+};
 
 
 const initialState = {
-  user: storedUser,
-  isAuthenticated: !!storedUser,
+  user: storedUser ,
+  isAuthenticated: !!storedUser ,
   loading: false,
   error: null,
 };
@@ -23,15 +33,16 @@ const authSlice = createSlice({
       state.error = null;
     },
     loginSuccess: (state, action) => {
-      state.loading = false;
-      state.isAuthenticated = true;
-      state.user = action.payload.user;
-      state.error = null;
-
-      localStorage.setItem('accessToken', action.payload.accessToken);
-      localStorage.setItem('user', JSON.stringify(action.payload.user));
+      handleAuthSuccess(state, action);
+    },
+    signupSuccess: (state, action) => {
+      handleAuthSuccess(state, action);
     },
     loginFailure: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    signupFailure: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
@@ -49,19 +60,6 @@ const authSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    signupSuccess: (state, action) => {
-      state.loading = false;
-      state.isAuthenticated = true;
-      state.user = action.payload.user;
-      state.error = null;
-
-      localStorage.setItem('accessToken', action.payload.accessToken);
-      localStorage.setItem('user', JSON.stringify(action.payload.user));
-    },
-    signupFailure: (state, action) => {
-      state.loading = false;
-      state.error = action.payload;
-    },
     updateUserProfile: (state, action) => {
       state.user = { ...state.user, ...action.payload };
       localStorage.setItem('user', JSON.stringify(state.user));
@@ -69,5 +67,16 @@ const authSlice = createSlice({
   },
 });
 
-export const { loginStart, loginSuccess, loginFailure, logout, signupStart, signupSuccess, signupFailure, updateUserProfile } = authSlice.actions;
+
+export const { 
+  loginStart, 
+  loginSuccess, 
+  loginFailure, 
+  logout, 
+  signupStart, 
+  signupSuccess, 
+  signupFailure, 
+  updateUserProfile 
+} = authSlice.actions;
+
 export default authSlice.reducer;

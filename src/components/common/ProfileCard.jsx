@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUserProfile } from "../../store/slices/authSlice";
 import { useMutation, useQueryClient } from "react-query";
 import api from "../../utils/api";
-import { FaUserEdit, FaUser } from "react-icons/fa";
+import { FaUserEdit} from "react-icons/fa";
 import "./ProfileCard.css";
 
 const ProfileCard = () => {
@@ -13,9 +13,9 @@ const ProfileCard = () => {
   const dispatch = useDispatch();
   const queryClient = useQueryClient();
 
-  const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(
-    user.name
-  )}&background=random`;
+  // const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+  //   user.name
+  // )}&background=random`;
 
   const updateProfileMutation = useMutation(
     async (newName) => {

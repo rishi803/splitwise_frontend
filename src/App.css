@@ -41,7 +41,7 @@
 }
 
 *{
-  border: 1px solid red;
+  /* border: 1px solid red; */
   box-sizing: border-box;;
 }
 
@@ -56,12 +56,6 @@ body {
   background:#1e293b;
   min-height: 100vh;
   color: #f8fafc;
-}
-
-.main-container-splitwise {
-  /* max-width: 1400px;
-  width: 100%;
-  margin: auto; */
 }
 
 .loader {

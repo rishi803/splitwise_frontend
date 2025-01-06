@@ -1,4 +1,4 @@
-// hooks/useDeleteGroup.js
+
 import { useMutation, useQueryClient } from "react-query";
 import { showSuccessNotification, showErrorNotification } from "../utils/notifications";
 import api from "../utils/api";

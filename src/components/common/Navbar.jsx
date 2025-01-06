@@ -1,9 +1,9 @@
 
 import {useState} from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector} from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { logout } from '../../store/slices/authSlice';
-import { FaRegUser, FaRegUserCircle } from "react-icons/fa";
+
+import {  FaRegUserCircle } from "react-icons/fa";
 import UserSidebar from './Sidebar.jsx';
 import './Navbar.css';
 
@@ -12,14 +12,8 @@ const Navbar = () => {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate('/login');
-  };
 
   return (
     <nav className="navbar">

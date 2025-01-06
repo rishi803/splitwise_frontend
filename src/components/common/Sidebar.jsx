@@ -24,7 +24,7 @@ const UserSidebar = ({ open, onClose }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log("user ", user);
+  // console.log("user ", user);
 
   const handleLogout = () => {
     dispatch(logout());
