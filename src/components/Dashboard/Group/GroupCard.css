@@ -1,45 +1,45 @@
 .group-card {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-  padding: 1.8rem;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  /* backdrop-filter: blur(10px); */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 1.5rem;
   position: relative;
   overflow: hidden;
 }
 
 .group-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #0056d2, #0099ff);
+  background: var(--primary-color);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
-
 
 .group-card:hover::before {
   opacity: 1;
 }
 
-
-.group-card-heading{
-  padding: 10px;
+.group-card-heading {
+  padding: 4px 10px;
   font-size: 16px;
-  white-space: normal; 
-  overflow-wrap: break-word; 
+  white-space: normal;
+  overflow-wrap: break-word;
   word-wrap: break-word;
+  text-align: start;
 }
 
 .group-card h3 {
-  color: #1a1a1a;
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 1.2rem;
+  background: var(--glasscard-heading);
+  -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .group-info {
@@ -47,7 +47,8 @@
   gap: 1.5rem;
   margin-bottom: 1.5rem;
   padding: 1.2rem;
-  background: rgba(0, 86, 210, 0.03);
+  background: var(--glasscard-text-background);
+  color:var(--glasscard-text);
   border-radius: 12px;
   border: 1px solid rgba(0, 86, 210, 0.08);
 }
@@ -56,7 +57,7 @@
   display: flex;
   align-items: center;
   gap: 0.6rem;
-  color: #4a5568;
+  color: var(--glassheading-text);
   font-size: 0.95rem;
   font-weight: 500;
 }
@@ -68,7 +69,7 @@
 .group-actions {
   display: flex;
   gap: 1rem;
-  margin-top: 1.5rem;
+  margin-top: 2.5rem;
 }
 
 .group-actions button {
@@ -91,38 +92,36 @@
 }
 
 .view-details:hover {
- transform: scale(1.05);
+  transform: scale(1.05);
 }
 
-.delete-card-icon{
-  position:absolute;
-  top:15px;
-  right:15px;
-  background:none;
-  outline:none;
-  border:none;
-  cursor:pointer;
+.delete-card-icon {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  outline: none;
+  border: none;
+  cursor: pointer;
 }
 
-.delete-card-icon svg{
-   color:rgb(243, 35, 35);
-    font-size:1.2rem;
-    transition: all 0.3s ease;
-    will-change: transform;
+.delete-card-icon svg {
+  color: rgb(241, 109, 109);
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  will-change: transform;
 }
 
-.delete-card-icon svg:hover{
+.delete-card-icon svg:hover {
   transform: scale(1.1);
 }
 
-
-.confirm-delete-container{
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  backdrop-filter: blur(40px);
+.confirm-delete-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .add-expense {
@@ -142,13 +141,13 @@
   .group-card {
     padding: 1.2rem;
   }
-  
+
   .group-info {
     flex-direction: column;
     gap: 0.8rem;
     padding: 1rem;
   }
-  
+
   .group-actions {
     flex-direction: column;
   }

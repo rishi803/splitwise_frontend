@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "react-query";
+import { useSelector } from 'react-redux';
 import { useSearchParams } from "react-router-dom";
 import api from "../../../utils/api";
 import GroupCard from "./GroupCard";
@@ -9,6 +10,7 @@ import "../../../pages/Dashboard.css";
 const ITEMS_PER_PAGE = 6;
 
 const GroupList = () => {
+  const { user } = useSelector((state) => state.auth);
   const [searchParams, setSearchParams] = useSearchParams();
   const pageFromUrl = parseInt(searchParams.get("page")) || 1;
   const [page, setPage] = useState(pageFromUrl);
@@ -17,10 +19,38 @@ const GroupList = () => {
     setSearchParams({ page });
   }, [page, setSearchParams]);
 
-  const { data, isLoading } = useQuery(
-    ["groups", page],
-    () => api.get(`/groups?page=${page}&limit=${ITEMS_PER_PAGE}`),
-    { keepPreviousData: true }
+  const { 
+    data, 
+    isLoading, 
+    isPreviousData,
+    isError 
+  } = useQuery(
+    ["groups", page, user?.id], // Include user.id in the query key
+    () => {
+      // Only fetch if user is logged in
+      if (!user) {
+        return null;
+      }
+      return api.get(`/groups?page=${page}&limit=${ITEMS_PER_PAGE}`);
+    },
+    {
+      // Preserve previous page data during loading
+      keepPreviousData: true,
+      
+      // Ensure data is fresh for new user
+      staleTime: 0,
+      
+      // Only fetch if user exists
+      enabled: !!user,
+      
+      // Prevent automatic refetching
+      refetchOnWindowFocus: false,
+      
+      // Callback to handle any fetch errors
+      onError: (error) => {
+        console.error('Failed to fetch groups:', error);
+      }
+    }
   );
 
   if (isLoading) return <div className="loading">Loading groups...</div>;

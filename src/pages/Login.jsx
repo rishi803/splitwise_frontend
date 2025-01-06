@@ -27,9 +27,7 @@ const Login = () => {
     dispatch(loginStart());
     try {
       const response = await api.post('/auth/login', values);
-      localStorage.setItem('accessToken', response.data.accessToken);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
-      dispatch(loginSuccess(response.data.user));
+      dispatch(loginSuccess(response.data));
       navigate('/dashboard');
     } catch (error) {
       const errorMessage = error.response?.data?.message || 'Login failed';
@@ -70,6 +68,7 @@ const Login = () => {
                   onInput={handleInput}
                   placeholder=""
                   className="form-input"
+                   autocomplete="off"
                 />
                 <label className='special-label'>Email</label>
               

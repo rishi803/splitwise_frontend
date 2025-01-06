@@ -12,7 +12,6 @@ const AddExpenseGroupModal = ({ groupId = null, onClose }) => {
   const [description, setDescription] = useState("");
   const [selectedGroup, setSelectedGroup] = useState(groupId);
   const [paidBy, setPaidBy] = useState(user.id);
-  const [selectedMembers, setSelectedMembers] = useState([]);
   const [errors, setErrors] = useState({});
 
   const queryClient = useQueryClient();
@@ -26,8 +25,22 @@ const AddExpenseGroupModal = ({ groupId = null, onClose }) => {
   const { data: groupMembers } = useQuery(
     ["groupMembers", selectedGroup],
     () => api.get(`/groups/${selectedGroup}/members`),
-    { enabled: !!selectedGroup }
+    { enabled: !!selectedGroup,
+      select: (response) => {
+        // If response doesn't have a data property, normalize it
+        if (Array.isArray(response)) {
+          return { 
+            data: response, 
+            total: response.length 
+          };
+        }
+        return response;
+      }
+     }
+    
   );
+
+// console.log('gm ',groupMembers);
 
   useEffect(() => {
     if (groupId) {
@@ -57,25 +70,14 @@ const AddExpenseGroupModal = ({ groupId = null, onClose }) => {
     (expenseData) => api.post("/expenses", expenseData),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["groupExpenses", selectedGroup]);
+        queryClient.invalidateQueries("groupExpenses");
         queryClient.invalidateQueries("groups");
+        queryClient.invalidateQueries("group");
         onClose();
       },
     }
   );
 
-  const handleMemberSelection = (memberId) => {
-    if (memberId === "all") {
-      setSelectedMembers(groupMembers?.data.map((m) => m.id) || []);
-    } else {
-      setSelectedMembers((prev) => {
-        if (prev.includes(memberId)) {
-          return prev.filter((id) => id !== memberId);
-        }
-        return [...prev, memberId];
-      });
-    }
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -99,7 +101,7 @@ const AddExpenseGroupModal = ({ groupId = null, onClose }) => {
         <h2>Add New Expense</h2>
         <form onSubmit={handleSubmit}>
           {!groupId && (
-            <div className="form-group">
+            <div className="form-group select-border">
               <select
                 value={selectedGroup}
                 onChange={(e) => {
@@ -109,6 +111,7 @@ const AddExpenseGroupModal = ({ groupId = null, onClose }) => {
                 className={`form-input ${
                   errors.selectedGroup ? "input-error" : ""
                 }`}
+                
               >
                 <option value="">Select Group</option>
                 {groups?.data.groups.map((group) => (
@@ -171,15 +174,14 @@ const AddExpenseGroupModal = ({ groupId = null, onClose }) => {
           {selectedGroup && (
             <div className="paid-by-container">
               <label>Paid By :</label>
+              <div className="select-border">
               <select
                 value={paidBy}
                 onChange={(e) => {
                   setPaidBy(e.target.value);
                   setErrors((prev) => ({ ...prev, paidBy: "" }));
                 }}
-                className={`form-input ${
-                  errors.paidBy ? "input-error" : ""
-                }`}
+                className={`form-input ${errors.paidBy ? "input-error" : ""}`}
                 required
               >
                 {groupMembers?.data.map((member) => (
@@ -188,6 +190,8 @@ const AddExpenseGroupModal = ({ groupId = null, onClose }) => {
                   </option>
                 ))}
               </select>
+              </div>
+            
             </div>
           )}
 

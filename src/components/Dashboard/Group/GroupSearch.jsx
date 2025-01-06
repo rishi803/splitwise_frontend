@@ -15,7 +15,7 @@ const GroupSearch = () => {
     () => api.get(`/groups?search=${searchTerm}`),
     {
       enabled: searchTerm.length > 0,
-      staleTime: 2000
+      staleTime: 2000,
     }
   );
 
@@ -66,20 +66,24 @@ const GroupSearch = () => {
                 className="suggestion-item"
                 onClick={() => handleSelectGroup(group.id)}
               >
-                <div className="suggestion-name">{group.name}</div>
-                <div className="suggestion-details">
-                  <span>
-                    <FaUsers /> {group.memberCount}
-                  </span>
-                  <span>
-                    <FaMoneyBillWave /> ₹{group.totalExpense}
-                  </span>
+                <div className="group-logo">
+          {group?.name?.charAt(0).toUpperCase()}
+        </div>
+                <div className="suggestion-info">
+                  <div className="suggestion-name">{group.name}</div>
+                  <div className="suggestion-details">
+                    <span className="detail-item">
+                      <FaUsers /> {group.memberCount} members
+                    </span>
+                    <span className="detail-item">
+                      <FaMoneyBillWave /> ₹{group.totalExpense}
+                    </span>
+                  </div>
                 </div>
               </div>
             ))
           ) : (
-            <div className="no-suggestions">No groups found
-            </div>
+            <div className="no-suggestions">No groups found</div>
           )}
         </div>
       )}

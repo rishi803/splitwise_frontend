@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { FaUsers, FaMoneyBillWave } from "react-icons/fa";
 import { FaTrash } from "react-icons/fa6";
 // import ExpenseChart from './ExpenseChart';
-import { useMutation, useQueryClient } from "react-query";
-import { toast } from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 
-import api from "../../../utils/api";
+import useDeleteGroup from "../../../hooks/useDeleteGroup";
+
 import AddExpenseModal from "../Modal/AddExpenseGroupModal";
 import ConfirmDeleteModal from "../Modal/ConfirmDeleteModal";
 
@@ -15,35 +15,13 @@ import "./GroupCard.css";
 
 const GroupCard = ({ group }) => {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
+
+  const deleteGroupMutation = useDeleteGroup();
   // const [showChart, setShowChart] = useState(false);
   const [showExpenseModal, setShowExpenseModal] = useState(false);
 
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
-  const notify = () =>
-    toast.success(`Group ${group.name}  deleted successfully!`, {
-      autoClose: 2000,
-    });
-
-  const notifyDelete = () =>
-    toast.error(`You are not authorised to delete this group.`);
-
-  const deleteGroup = async (id) => {
-    try {
-      await api.delete(`/groups/${id}`);
-      notify();
-    } catch (error) {
-      notifyDelete(error.response.data.message);
-    }
-  };
-
-  const deleteGroupMutation = useMutation({
-    mutationFn: deleteGroup,
-    onSuccess: () => {
-      queryClient.invalidateQueries("groups");
-    },
-  });
 
   const handleConfirmDelete = async () => {
     await deleteGroupMutation.mutate(group.id);
@@ -56,11 +34,15 @@ const GroupCard = ({ group }) => {
 
   return (
     <div className="group-card">
-
-      <div className="group-card-heading">
-      <h3>{group.name}</h3>
+      <div className="group-card-header">
+        {/* <div className="group-avatar">
+          {group?.name?.charAt(0).toUpperCase()}
+        </div> */}
+        <div className="group-card-heading">
+          <h3>{group.name}</h3>
+        </div>
       </div>
-      
+
       <div className="group-info">
         <div>
           <FaUsers /> {group.memberCount} members

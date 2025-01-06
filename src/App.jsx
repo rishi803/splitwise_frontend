@@ -10,6 +10,7 @@ import Navbar from './components/common/Navbar';
 import GroupDetails from './pages/GroupDetail';
 
 import './App.css';
+import ProfileCard from './components/common/ProfileCard';
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/user-profile" element={<ProfileCard />} />
             <Route
               path="/dashboard"
               element={

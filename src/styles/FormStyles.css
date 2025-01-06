@@ -8,10 +8,11 @@
 }
 
 .auth-card {
-  background: var(--form-background);
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+  background: var(--glasscard-background);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding:2rem;
   width: 100%;
   max-width: 400px;
 }
@@ -19,10 +20,12 @@
 
 
 .auth-card h2 {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2.3rem;
   color: var(--primary-color);
   font-size: 1.8rem;
   font-weight: bold;
+  text-align: start;
+  margin-top:-1px;
 }
 
 .form-group {
@@ -31,17 +34,20 @@
 }
 
 .form-input {
-  width: 90%;
+  width: 100%;
   padding: 1rem;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-dim-color);
+  color:var(--glasscard-text);
   border-radius: 8px;
   font-size: 1rem;
-  background-color: var(--background-color);
+  background-color: var(--glasscard-text-background);
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .form-input:focus {
   outline: none;
+  background:transparent;
+
   border-color: var(--primary-color);
   box-shadow: 0 0 6px rgba(69, 123, 157, 0.3);
 }
@@ -82,13 +88,18 @@
 .form-group input:not(:placeholder-shown) + label {
   top: -5px;
   font-size: 0.85rem;
-  background-color: white;
+  background:#253041;
   color: var(--primary-color);
+}
+
+
+input:-internal-autofill-selected {
+  background-color: white !important;
 }
 
 .error-text {
   text-align: left;
-  color: #e74c3c;
+  color: var(--error-color);
   font-size: 0.875rem;
   margin-top:-16px;
   margin-bottom:25px;
@@ -97,7 +108,7 @@
 
 .error-message {
   background-color: #fdecea;
-  color: #e74c3c;
+  color: var(--error-color);
   padding: 0.75rem;
   border-radius: 4px;
   margin-bottom: 1.3rem;
@@ -118,7 +129,7 @@
 }
 
 .auth-button:hover {
-  background-color: #012ef4;
+  background-color: var(--primary-hover-color);
   transform: scale(1.03);
 }
 
@@ -129,7 +140,7 @@
 
 .auth-link {
   text-align: center;
-  margin-top: 1rem;
+  margin-top: 1.4rem;
   color: #7f8c8d;
 }
 
@@ -143,12 +154,5 @@
   .auth-card {
     padding: 1.5rem;
   }
-
-  .form-input {
-    padding: 0.5rem;
-  }
-
-  .auth-button {
-    padding: 0.5rem;
-  }
+ 
 }
