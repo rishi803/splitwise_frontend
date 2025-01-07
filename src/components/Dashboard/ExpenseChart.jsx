@@ -1,42 +1,37 @@
 import React, { useMemo } from 'react';
 import { 
   ResponsiveContainer, 
-  LineChart, 
+  ComposedChart, 
+  Area, 
   Line, 
   XAxis, 
   YAxis, 
   CartesianGrid, 
   Tooltip, 
-  Legend,
-  Area,
-  ComposedChart
+  Legend 
 } from 'recharts';
 import { useQuery } from 'react-query';
-import { format, 
-  parseISO, 
-  subDays, 
-  addDays, } from 'date-fns';
+import { format, parseISO, subDays, addDays } from 'date-fns';
 import api from '../../utils/api';
 
 const ExpenseChart = ({ groupId }) => {
-
-    // Helper function to fill missing dates
-    const fillMissingDates = (data) => {
-      const filledData = [];
-      const startDate = subDays(new Date(), 30);
+  // Helper function to fill missing dates
+  const fillMissingDates = (data) => {
+    const filledData = [];
+    const startDate = subDays(new Date(), 29);
+    
+    for (let i = 0; i < 30; i++) {
+      const currentDate = format(addDays(startDate, i), 'yyyy-MM-dd');
+      const existingEntry = data.find(entry => format(parseISO(entry.date), 'yyyy-MM-dd') === currentDate);
       
-      for (let i = 0; i < 30; i++) {
-        const currentDate = format(addDays(startDate, i), 'yyyy-MM-dd');
-        const existingEntry = data.find(entry => entry.date === currentDate);
-        
-        filledData.push({
-          date: currentDate,
-          amount: existingEntry ? existingEntry.amount : 0
-        });
-      }
-      
-      return filledData;
-    };
+      filledData.push({
+        date: currentDate,
+        amount: existingEntry ? parseFloat(existingEntry.amount) : 0 // Ensure amount is a number
+      });
+    }
+    
+    return filledData;
+  };
 
   const { 
     data: chartData, 
@@ -45,12 +40,8 @@ const ExpenseChart = ({ groupId }) => {
     ["expenseChart", groupId],
     () => api.get(`/groups/${groupId}/expenses/chart`),
     {
-      // Transform and prepare data
       select: (response) => {
-        // Sort and fill missing dates
-        const sortedData = response.data
-          .sort((a, b) => new Date(a.date) - new Date(b.date));
-        
+        const sortedData = response.data.sort((a, b) => new Date(a.date) - new Date(b.date));
         return fillMissingDates(sortedData);
       }
     }
@@ -62,17 +53,15 @@ const ExpenseChart = ({ groupId }) => {
       const start = Math.max(0, index - window + 1);
       const end = index + 1;
       const windowSlice = data.slice(start, end);
-      
       const avg = windowSlice.reduce((sum, item) => sum + item.amount, 0) / windowSlice.length;
       return Number(avg.toFixed(2));
     });
   };
 
   // Memoized data processing
-  const processedChartData = useMemo(() => {
+  const processedChartData = useMemo(() => { 
     if (!chartData) return [];
 
-    // Calculate moving average
     const movingAverage = calculateMovingAverage(chartData, 7);
     
     return chartData.map((item, index) => ({
@@ -81,7 +70,13 @@ const ExpenseChart = ({ groupId }) => {
     }));
   }, [chartData]);
 
-
+  // Calculate min and max for Y-axis
+  const minAmount = Math.min(...processedChartData.map(data => data.amount));
+  const maxAmount = Math.max(...processedChartData.map(data => data.amount));
+  const maxMovingAverage = Math.max(...processedChartData.map(data => data.movingAverage));
+  
+  const yAxisMin = Math.min(minAmount, 0); // Ensure it starts from 0 or lower
+  const yAxisMax = Math.max(maxAmount, maxMovingAverage) + 10; // Add buffer for visibility
 
   // Custom Tooltip
   const CustomTooltip = ({ active, payload, label }) => {
@@ -110,7 +105,7 @@ const ExpenseChart = ({ groupId }) => {
     return (
       <section className="chart-section glass-panel">
         <div className="chart-loading">
-         <div className='loader'></div>
+          <div className='loader'></div>
           <p>Loading expense trends...</p>
         </div>
       </section>
@@ -131,7 +126,7 @@ const ExpenseChart = ({ groupId }) => {
     <section className="chart-section glass-panel">
       <h2>Expense Trends</h2>
       <div className="chart-container">
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={400}>
           <ComposedChart 
             data={processedChartData}
             margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
@@ -148,7 +143,7 @@ const ExpenseChart = ({ groupId }) => {
             </defs>
             
             <CartesianGrid 
-              stroke="rgba(255,255,255,0.1)" 
+              stroke="rgba(127, 104, 104, 0.58)" 
               strokeDasharray="3 3" 
             />
             
@@ -160,6 +155,7 @@ const ExpenseChart = ({ groupId }) => {
             />
             
             <YAxis 
+              domain={[yAxisMin, yAxisMax]}
               stroke="#94a3b8"
               tick={{ fill: '#94a3b8' }}
               tickFormatter={(tick) => `₹${tick}`}
@@ -176,7 +172,7 @@ const ExpenseChart = ({ groupId }) => {
             
             <Legend 
               verticalAlign="top" 
-              height={36}
+              height={45}
               iconType="circle"
             />
             
@@ -203,4 +199,3 @@ const ExpenseChart = ({ groupId }) => {
 };
 
 export default ExpenseChart;
-

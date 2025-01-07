@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { signupSchema } from "../utils/validation";
-import {signupStart, signupSuccess } from '../store/slices/authSlice';
-import { useDispatch} from 'react-redux';
+import { signupStart, signupSuccess } from "../store/slices/authSlice";
+import { useDispatch } from "react-redux";
 import api from "../utils/api";
 import "../styles/FormStyles.css";
 
@@ -28,7 +28,7 @@ const Signup = () => {
     dispatch(signupStart());
 
     try {
-     const response= await api.post("/auth/signup", values);
+      const response = await api.post("/auth/signup", values);
       dispatch(signupSuccess(response.data));
       navigate("/dashboard");
     } catch (error) {
@@ -66,7 +66,7 @@ const Signup = () => {
                   name="name"
                   placeholder=""
                   className="form-input"
-                   autocomplete="off"
+                  autocomplete="off"
                 />
                 <label className="special-label">Name</label>
               </div>
@@ -82,7 +82,7 @@ const Signup = () => {
                   name="email"
                   placeholder=""
                   className="form-input"
-                   autocomplete="off"
+                  autocomplete="off"
                 />
                 <label className="special-label">Email</label>
               </div>

@@ -5,9 +5,9 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   const dispatch = useDispatch();
 
   const handlePageChange = (newPage) => {
-    // Dispatch the new page to the Redux store
+    // update global state
     dispatch(setCurrentPage(newPage));
-    // Call the onPageChange function to update the local state
+    // onPageChange function to update the local state
     onPageChange(newPage);
   };
 

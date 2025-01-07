@@ -16,8 +16,6 @@
     box-shadow: 0 8px 32px 0 rgba(146, 153, 247, 0.1);
     backdrop-filter: blur( 20px );
     -webkit-backdrop-filter: blur( 20px );
-    /* border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px; */
     border-bottom: 1px solid var(--border-color);
   }
   
@@ -37,7 +35,7 @@
   .navbar-buttons {
     display: flex;
     gap: 1rem;
-    color:white !important;
+    color:white;
   }
   
  
@@ -57,7 +55,6 @@
   }
 
   .user-profile-button svg{
-    /* color:var(--primary-color); */
     font-size:1.3rem;
   }
   

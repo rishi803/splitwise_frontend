@@ -1,13 +1,9 @@
 .dashboard {
   padding: 2rem;
   max-width: 1200px;
-  margin: 100px auto;
+  margin: 5.5rem auto;
   position: relative;
 }
-
-/* *{
-    border:1px solid red;
-  } */
 
   .welcome-header {
     display: grid;
@@ -16,16 +12,7 @@
     gap: 1.5rem; 
     border-radius: 8px;
   }
-  
-  .group-search-container {
-    display: flex;
-    align-items: center;
-  }
-  
-  .welcome-header-button {
-    justify-self: end; 
-  }
-  
+
 
 .create-group-button {
   background-color: var(--primary-color);
@@ -53,9 +40,6 @@
   transform: scale(1.05);
 }
 
-/* *{
-    border: 1px solid red;
-  } */
 
 .group-list-container {
   min-height: calc(100vh - 170px);

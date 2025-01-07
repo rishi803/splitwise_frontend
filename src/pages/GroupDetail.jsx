@@ -9,15 +9,15 @@ import {
   FaMoneyBillWave,
 } from "react-icons/fa";
 
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+// import {
+//   LineChart,
+//   Line,
+//   XAxis,
+//   YAxis,
+//   CartesianGrid,
+//   Tooltip,
+//   ResponsiveContainer,
+// } from "recharts";
 import api from "../utils/api";
 import AddExpenseModal from "../components/Dashboard/Modal/AddExpenseGroupModal";
 import SidebarToggle from "../components/common/SideToggleGroup";
@@ -52,12 +52,12 @@ export const GroupDetails = () => {
     () => api.get(`/groups/${id}/expenses`)
   );
 
-  const { data: chartData, isLoading: chartLoading } = useQuery(
-    ["expenseChart", id],
-    () => api.get(`/groups/${id}/expenses/chart`)
-  );
+  // const { data: chartData, isLoading: chartLoading } = useQuery(
+  //   ["expenseChart", id],
+  //   () => api.get(`/groups/${id}/expenses/chart`)
+  // );
 
-  if (groupLoading || expensesLoading || chartLoading) {
+  if (groupLoading || expensesLoading) {
     return <div className="loader"></div>;
   }
 
@@ -70,42 +70,28 @@ export const GroupDetails = () => {
         {sidebarOpen ? <FaTimes /> : <FaBars />}
       </button>
 
-     
-        <SidebarToggle isOpen={sidebarOpen} isMobile={isMobile} groupId={group?.data.id} groupName={group?.data.name} />
+      <SidebarToggle
+        isOpen={sidebarOpen}
+        isMobile={isMobile}
+        groupId={group?.data.id}
+        groupName={group?.data.name}
+      />
 
-        {/* Main Content */}
-        <main className={`main-content ${sidebarOpen ? "shifted" : ""}`}>
-          <header className="page-header">
-            <h1>{group?.data.name}</h1>
-          </header>
+      {/* Main Content */}
+      <main className={`main-content ${sidebarOpen ? "shifted" : ""}`}>
+        <header className="page-header">
+          <h1>{group?.data.name}</h1>
+        </header>
 
-          <div className="stats-grid">
-            <div className="stat-card">
-              <div className="stat-icon">
-                <FaUsers />
-              </div>
-              <div className="stat-content">
-                <h3>Total Members</h3>
-                <p>{group?.data.memberCount}</p>
-                {/* {2.5 && (
-                    <span
-                      className={`trend ${trend > 0 ? "positive" : "negative"}`}
-                    >
-                      {trend > 0 ? "+" : ""}
-                      {trend}%
-                    </span>
-                  )} */}
-              </div>
+        <div className="stats-grid">
+          <div className="stat-card">
+            <div className="stat-icon">
+              <FaUsers />
             </div>
-
-            <div className="stat-card">
-              <div className="stat-icon">
-                <FaMoneyBillWave />
-              </div>
-              <div className="stat-content">
-                <h3>Total Expenses</h3>
-                <p>{group?.data.totalExpense}</p>
-                {/* {-1.2 && (
+            <div className="stat-content">
+              <h3>Total Members</h3>
+              <p>{group?.data.memberCount}</p>
+              {/* {2.5 && (
                     <span
                       className={`trend ${trend > 0 ? "positive" : "negative"}`}
                     >
@@ -113,35 +99,57 @@ export const GroupDetails = () => {
                       {trend}%
                     </span>
                   )} */}
-              </div>
             </div>
           </div>
 
-          <div className="dashboard-grid">
-            {/* Member Balances */}
-            <section className="balance-section glass-panel">
+          <div className="stat-card">
+            <div className="stat-icon">
+              <FaMoneyBillWave />
+            </div>
+            <div className="stat-content">
+              <h3>Total Expenses</h3>
+              <p>{group?.data.totalExpense}</p>
+              {/* {-1.2 && (
+                    <span
+                      className={`trend ${trend > 0 ? "positive" : "negative"}`}
+                    >
+                      {trend > 0 ? "+" : ""}
+                      {trend}%
+                    </span>
+                  )} */}
+            </div>
+          </div>
+        </div>
+
+        <div className="dashboard-grid">
+          {/* Member Balances */}
+          <section className="balance-section glass-panel">
             <h2>Member Balances</h2>
             <div className="balance-list">
               {group?.data.memberBalances.map((member) => (
-               
                 <div key={member.id} className="balance-item">
                   <span className="member-name">{member.username}</span>
-                  <span className={`balance-amount ${member.balance >= 0 ? "positive" : "negative"}`}>
-                    {member.balance >= 0 ? "+" : "-"}₹{Math.abs(member.balance).toFixed(2)}
+                  <span
+                    className={`balance-amount ${
+                      member.balance >= 0 ? "positive" : "negative"
+                    }`}
+                  >
+                    {member.balance >= 0 ? "+" : "-"}₹
+                    {Math.abs(member.balance).toFixed(2)}
                   </span>
                 </div>
               ))}
             </div>
           </section>
 
-            {/* Expense Chart */}
-            {/* <section className="chart-section glass-panel"> */}
-            {/* <h2>Expense Trends</h2> */}
-            <ExpenseChart groupId={id}/>
+          {/* Expense Chart */}
+          {/* <section className="chart-section glass-panel"> */}
+          {/* <h2>Expense Trends</h2> */}
+          <ExpenseChart groupId={id} />
           {/* </section> */}
 
-            {/* Recent Expenses */}
-            <section className="expenses-section glass-panel">
+          {/* Recent Expenses */}
+          <section className="expenses-section glass-panel">
             <h2>Recent Expenses</h2>
             <div className="expense-list">
               {expenses?.data.map((expense) => (
@@ -151,7 +159,9 @@ export const GroupDetails = () => {
                     <p>Paid by {expense.paid_by_name}</p>
                   </div>
                   <div className="expense-meta">
-                    <span className="amount">₹{expense.amount.toLocaleString()}</span>
+                    <span className="amount">
+                      ₹{expense.amount.toLocaleString()}
+                    </span>
                     <span className="date">
                       {new Date(expense.created_at).toLocaleDateString()}
                     </span>
@@ -160,10 +170,8 @@ export const GroupDetails = () => {
               ))}
             </div>
           </section>
-
-          </div>
-        </main>
-   
+        </div>
+      </main>
 
       <button
         className="add-expense-button"

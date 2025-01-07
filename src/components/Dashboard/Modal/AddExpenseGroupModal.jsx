@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useSelector } from "react-redux";
 import api from "../../../utils/api";
+import { showSuccessNotification } from "../../../utils/notifications";
 import "./AddExpenseModal.css";
 
 const AddExpenseGroupModal = ({ groupId = null, onClose }) => {
@@ -73,6 +74,7 @@ const AddExpenseGroupModal = ({ groupId = null, onClose }) => {
         queryClient.invalidateQueries("groupExpenses");
         queryClient.invalidateQueries("groups");
         queryClient.invalidateQueries("group");
+        queryClient.invalidateQueries("expenseChart");
         onClose();
       },
     }
@@ -93,6 +95,8 @@ const AddExpenseGroupModal = ({ groupId = null, onClose }) => {
       splitType: "EQUAL",
       splitWith: memberIds,
     });
+
+    showSuccessNotification('Expense added Successfully !')
   };
 
   return (
@@ -140,7 +144,7 @@ const AddExpenseGroupModal = ({ groupId = null, onClose }) => {
               }}
               className={`form-input ${errors.amount ? "input-error" : ""}`}
               min="0"
-              step="10"
+              step="0.01"
             />
           </div>
 
