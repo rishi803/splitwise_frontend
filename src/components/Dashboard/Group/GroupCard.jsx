@@ -13,6 +13,8 @@ import ConfirmDeleteModal from "../Modal/ConfirmDeleteModal";
 
 import "./GroupCard.css";
 
+import { showSuccessNotification } from "../../../utils/notifications";
+
 const GroupCard = ({ group }) => {
   const navigate = useNavigate();
 
@@ -26,6 +28,7 @@ const GroupCard = ({ group }) => {
   const handleConfirmDelete = async () => {
     await deleteGroupMutation.mutate(group.id);
     setShowDeleteConfirmation(false);
+    showSuccessNotification('Group deleted successfully');
   };
 
   const handleCancelDelete = () => {

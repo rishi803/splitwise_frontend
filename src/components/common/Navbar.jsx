@@ -8,7 +8,7 @@ import UserSidebar from './Sidebar.jsx';
 import './Navbar.css';
 
 const Navbar = () => {
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const { isAuthenticated} = useSelector((state) => state.auth);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -27,14 +27,7 @@ const Navbar = () => {
             <span>Profile</span>
           </button>
         ) : (
-          <>
-            {/* <button onClick={() => navigate('/login')} className="nav-button">
-              Login
-            </button>
-            <button onClick={() => navigate('/signup')} className="nav-button">
-              Sign Up
-            </button> */}
-          </>
+          null
         )}
       </div>
 

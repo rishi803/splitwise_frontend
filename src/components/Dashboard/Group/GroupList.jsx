@@ -6,6 +6,7 @@ import api from "../../../utils/api";
 import GroupCard from "./GroupCard";
 import Pagination from "../../common/Pagination";
 import "../../../pages/Dashboard.css";
+import { showErrorNotification } from "../../../utils/notifications"; //
 
 const ITEMS_PER_PAGE = 6;
 
@@ -22,10 +23,8 @@ const GroupList = () => {
   const { 
     data, 
     isLoading, 
-    isPreviousData,
-    isError 
   } = useQuery(
-    ["groups", page, user?.id], // Include user.id in the query key
+    ["groups", page, user?.id],
     () => {
       // Only fetch if user is logged in
       if (!user) {
@@ -42,18 +41,16 @@ const GroupList = () => {
       
       // Only fetch if user exists
       enabled: !!user,
-      
-      // Prevent automatic refetching
-      refetchOnWindowFocus: false,
-      
+
       // Callback to handle any fetch errors
       onError: (error) => {
         console.error('Failed to fetch groups:', error);
+        showErrorNotification('Failed to fetch the groups.')
       }
     }
   );
 
-  if (isLoading) return <div className="loading">Loading groups...</div>;
+  if (isLoading) return <div className="loader"></div>;
 
   const showPagination = data?.data.total > ITEMS_PER_PAGE;
 

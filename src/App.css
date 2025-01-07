@@ -64,6 +64,8 @@ body {
   border: 5px solid transparent;
   border-top: 5px solid rgba(255, 255, 255, 0.647); 
   border-radius: 100%;
+  margin:auto;
+  margin-top:6rem;
   animation: spin 1s linear infinite; 
 }
 

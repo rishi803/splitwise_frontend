@@ -28,7 +28,7 @@ api.interceptors.response.use(
       originalRequest._retry = true;
       
       try {
-        const response = await api.post('/auth/refresh-token');  await api.post('/auth/refresh-token');
+        const response =  await api.post('/auth/refresh-token');
         const { accessToken } = response.data;
         //Update Authorization header with new access token
         localStorage.setItem('accessToken', accessToken);

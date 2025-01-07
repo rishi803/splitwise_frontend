@@ -9,10 +9,11 @@ import ConfirmDeleteModal from "../Dashboard/Modal/ConfirmDeleteModal";
 
 import useDeleteGroup from "../../hooks/useDeleteGroup";
 
+import { showSuccessNotification } from "../../utils/notifications";
+
 import "./SideToggleGroup.css";
 const SideToggleGroup = ({ isOpen, isMobile, groupId, groupName }) => {
   const deleteGroupMutation = useDeleteGroup();
-
   const [showAddMemberModal, setShowAddMemberModal] = useState(false);
   const [showRemoveMemberModal, setShowRemoveMemberModal] = useState(false);
   const [showDeleteGroupModal, setShowDeleteGroupModal] = useState(false);
@@ -20,6 +21,7 @@ const SideToggleGroup = ({ isOpen, isMobile, groupId, groupName }) => {
   const handleConfirmDelete = async () => {
     await deleteGroupMutation.mutate(groupId);
     setShowDeleteGroupModal(false);
+    showSuccessNotification('Group deleted successfully');
   };
 
   const handleCancelDelete = () => {
